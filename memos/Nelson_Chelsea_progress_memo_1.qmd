@@ -24,14 +24,8 @@ citation-location: margin
 
 ## Github Repo Link
 
-[Final Project II Progress Memo I](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
+[Final Project II - Progress Memo I](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
 
-:::
-
-::: {.callout-warning}
-GitHub (free account) cannot store large files. If you try to commit and push a large dataset you will have an ERROR! Any file over 100 MB (100,000 KB) needs to be added to the `.gitignore` file BEFORE committing.
-
-**We may need to do that for files in your final project!**
 :::
 
 ```{r}
@@ -44,10 +38,26 @@ library(tidymodels)
 
 ```
 
-
 ## Data source
 
-Blah blah blah^[an example of footnote --- [content in margins](https://quarto.org/docs/blog/posts/2022-02-17-advanced-layout/)]
+I will be using the Centers for Disease Control and Prevention's (CDC) survey 
+data from their Behavioral Risk Factor Surveillance System (BRFSS) which is a 
+health-related telephone survey. Although looking, at multiple aspects of life 
+through these telephone surveys, specific Diabetes Health Indicators Dataset, 
+that I will be looking at, contains statistics and lifestyle survey information
+about people in general along with their diagnosis of diabetes. Currently, I 
+have two versions of the dataset, one that is extremely larger, having over 
+250,000 instances, while also looking at the diabetes diagnoses of having no
+diabetes, prediabetes, and or diabetes. The other version of the dataset
+is much smaller, having around 70,000 instances, while also only looking at the 
+diabetes diagnoses of having no diabetes or having diabetes. Furthermore, whereas
+the former does not have a balance or equality in the distribution of the 
+different diagnoses of diabetes, the later has an equal 50-50 split between
+the two diagnoses. Thus going forward for Progress Memo 2 and the rest of my 
+project, I will have to figure out which dataset I will exactly be using. This
+is something I will possible go to ask the professor and or TAs for 
+their opinions on the matter as well. Both of the versions were found on the 
+same Kaggle website.1^[These datasets were sourced from Kaggle Diabetes Health Indicators Dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_012_health_indicators_BRFSS2015.csv)]
 
 ## Why this data
 
