@@ -34,6 +34,17 @@ GitHub (free account) cannot store large files. If you try to commit and push a 
 **We may need to do that for files in your final project!**
 :::
 
+```{r}
+#| label: loading-packages
+#| echo: false 
+
+library(here)
+library(tidyverse)
+library(tidymodels)
+
+```
+
+
 ## Data source
 
 Blah blah blah^[an example of footnote --- [content in margins](https://quarto.org/docs/blog/posts/2022-02-17-advanced-layout/)]
