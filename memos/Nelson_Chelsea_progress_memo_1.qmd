@@ -5,27 +5,27 @@ subtitle: |
   | Data Science 2 with R (STAT 301-2)
 author: "Chelsea Nelson"
 date: today
-
 format:
   html:
+    
     toc: true
     embed-resources: true
-    
 execute:
   echo: false
   warning: false
-
 from: markdown+emoji 
 reference-location: margin
 citation-location: margin
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-::: {.callout-tip icon=false}
-
+::: {.callout-tip icon="false"}
 ## Github Repo Link
 
-[Final Project II - Progress Memo I](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
-
+[Final Project II - Progress Memo
+I](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
 :::
 
 ```{r}
@@ -38,39 +38,162 @@ library(tidymodels)
 
 ```
 
+## Prediction Problem
+
+For this project, my prediction objective is to predict which diabetes
+diagnoses based on general health questions. This objective is a
+classification problem, as there are up to three different classes that
+someone could identify with in terms of their diabetes diagnosis: not
+having diabetes, being prediabetic, or being diabetic.
+
+My motivation for pursuing this particular problem is because I am
+interested in seeing what factors of everyday life seem play a role in
+the diagnosing of diabetes. Additionally, as I will go into later in the
+memo, the datasets that I am using are fairly large, so I hope to see
+and engage with them in meaningful manners to be able to challenge and
+showcase my skills that I have learned throughout the quarter.
+
 ## Data source
 
-I will be using the Centers for Disease Control and Prevention's (CDC) survey 
-data from their Behavioral Risk Factor Surveillance System (BRFSS) which is a 
-health-related telephone survey. Although looking, at multiple aspects of life 
-through these telephone surveys, specific Diabetes Health Indicators Dataset, 
-that I will be looking at, contains statistics and lifestyle survey information
-about people in general along with their diagnosis of diabetes. Currently, I 
-have two versions of the dataset, one that is extremely larger, having over 
-250,000 instances, while also looking at the diabetes diagnoses of having no
+I will be using the Centers for Disease Control and Prevention's (CDC)
+survey data from their Behavioral Risk Factor Surveillance System
+(BRFSS) which is a health-related telephone survey. Although looking, at
+multiple aspects of life through these telephone surveys, specific
+Diabetes Health Indicators Dataset, that I will be looking at, contains
+statistics and lifestyle survey information about people in general
+along with their diagnosis of diabetes. Currently, I have two versions
+of the dataset, one that is extremely larger, having over 250,000
+instances, while also looking at the diabetes diagnoses of having no
 diabetes, prediabetes, and or diabetes. The other version of the dataset
-is much smaller, having around 70,000 instances, while also only looking at the 
-diabetes diagnoses of having no diabetes or having diabetes. Furthermore, whereas
-the former does not have a balance or equality in the distribution of the 
-different diagnoses of diabetes, the later has an equal 50-50 split between
-the two diagnoses. Thus going forward for Progress Memo 2 and the rest of my 
-project, I will have to figure out which dataset I will exactly be using. This
-is something I will possible go to ask the professor and or TAs for 
-their opinions on the matter as well. Both of the versions were found on the 
-same Kaggle website.1^[These datasets were sourced from Kaggle Diabetes Health Indicators Dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_012_health_indicators_BRFSS2015.csv)]
+is much smaller, having around 70,000 instances, while also only looking
+at the diabetes diagnoses of having no diabetes or having diabetes.
+Furthermore, whereas the former does not have a balance or equality in
+the distribution of the different diagnoses of diabetes, the later has
+an equal 50-50 split between the two diagnoses. Thus going forward for
+Progress Memo 2 and the rest of my project, I will have to figure out
+which dataset I will exactly be using. This is something I will possible
+go to ask the professor and or TAs for their opinions on the matter as
+well. Both of the versions were found on the same Kaggle website.[^1]
+
+[^1]: These datasets were sourced from [Kaggle Diabetes Health
+    Indicators
+    Dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_012_health_indicators_BRFSS2015.csv).
 
 ## Why this data
 
-Blah blah blah^[another footnote]
+The reason I choose this dataset is because I thought it would be
+interesting to see what factors of general life play a role in the
+prediction and truth behind if a person has diabetes or not.
+Furthermore, because I am dealing with extremely large datasets, I think
+this would be an excellent moment to challenge myself more on applying
+what I am learning in class to such an interesting and full dataset in
+which I can use different predictors and try to find different and the
+best ways to gain accurate predictions through my models.
 
 ## Data quality & complexity check
 
-Blah blah blah
+#### Diabetes Health Indicators Dataset (Larger Version)
+
+```{r}
+#| label: loading-dataset
+
+diabetes_data_large <- read_csv(here("data/diabetes_012_health_indicators_BRFSS2015.csv")) %>% 
+  janitor::clean_names()
+
+diabetes_data_large %>% slice_head(n = 200) %>% DT::datatable()
+```
+
+#### Diabetes Health Indicators Dataset (Smaller Version)
+
+```{r}
+#| label: loading-dataset_2
+
+diabetes_data_small <- read_csv(here("data/diabetes_binary_5050split_health_indicators_BRFSS2015.csv")) %>% 
+  janitor::clean_names()
+
+diabetes_data_small %>% slice_head(n = 200) %>% DT::datatable()
+```
+
+### Skimming Datasets
+
+#### Diabetes Health Indicators Dataset (Larger Version)
+
+```{r}
+#| label: skimming-dataset
+#| echo: false 
+
+diabetes_data_large %>% skimr::skim_without_charts() 
+
+```
+
+The larger version of the Diabetes Health Indicators Dataset has 22
+variables and 253,680 observations. Within this, all of the variables
+are numerical, however I will have to go back later on to change some of
+these variable types. There seems to be no instances of missingness data
+currently.
+
+#### Diabetes Health Indicators Dataset (Smaller Version)
+
+```{r}
+#| label: skimming-dataset_2
+#| echo: false
+
+diabetes_data_small %>% skimr::skim_without_charts() 
+
+```
+
+Similar to the larger version, the smaller version of the Diabetes
+Health Indicators Dataset also has 22 variables, however this time only
+having 70,692 observations. The variables are again all listed as
+numerical right now, however I will have to go back and change a lot of
+these to being categorical. There are no instances of missingness in the
+dataset.
+
+Overall from skimming both datasets, we can that there is no missingness
+in the data and that everything has been categorized as a numerical
+variable. I will have to go back to the dataset and change this so that
+the all variables but `bmi`, `ment_hlth`, `phys_hlth` are factor
+variables, as that is their original function and usage.
 
 ## Potential data issues
 
-Blah blah blah
+I think the main issues that I could face are using the fairly large
+datasets in the best manner possible. Additionally I need to work
+through how I can incorporate in the best manner the lesser amount of
+numerical variables with that of the more categorical variables in which
+I will be making and using.
+
+## Target variable analysis
+
+As I said previously the larger version of the dataset is not balanced
+in terms of the distribution of the three classes of diabetes diagnosis
+that are present, thus from the figure below, we can see that most
+people who were included in this dataset did not have diabetes, with
+that number being around 213,703. The least amount of people were
+prediabetic, as the number rests at 4,631. Lastly, there are 35,346
+people who were diabetic in this dataset. Thus, if I were to use the
+larger version of the dataset, I would have to take these imbalances
+into account and most likely use stratified sampling to ensure a good
+distribution of the data when splitting.
+
+![Univariate Analysis - Diabetes Diagnosis (Large Version)](images/figure-1.png) 
+
+Contrastingly, for the smaller version of
+the dataset, there is a balance between the amount of people who did and
+did not have diabetes. When looking at the distribution between the two
+classes, we see that there is an equal amount of 35346 people included
+from both sides. Although stratified sampling would most likely not be
+needed anymore due to the balance in classes, I will still be including
+it, if I use this version as it is always helpful and tends to help
+ensure good predictive model building skills. A look at the distribution
+of the two classes provided in the smaller version of the data can be
+seen down below.
+
+![Univariate Analysis - Diabetes Diagnosis (Small Version)](images/figure-2.png)
 
 ## Misc
 
-Blah Blah
+Currently, my biggest concern is knowing which of the datasets that I
+want to use in my actual project. I am currently leaning towards the
+larger version, as I would find it interesting to do multiclass
+classification prediction model.
