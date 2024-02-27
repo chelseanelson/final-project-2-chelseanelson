@@ -23,8 +23,7 @@ editor:
 ::: {.callout-tip icon="false"}
 ## Github Repo Link
 
-[Final Project II - Progress Memo
-I](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
+[Final Project II - Progress Memo I](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
 :::
 
 ```{r}

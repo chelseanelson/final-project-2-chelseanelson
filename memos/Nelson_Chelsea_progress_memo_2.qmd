@@ -1,0 +1,59 @@
+---
+title: "Progress Memo 2"
+subtitle: |
+  | Final Project 
+  | Data Science 2 with R (STAT 301-2)
+author: "Chelsea Nelson"
+date: today
+format:
+  html:
+    
+    toc: true
+    embed-resources: true
+execute:
+  warning: false
+from: markdown+emoji 
+reference-location: margin
+citation-location: margin
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+::: {.callout-tip icon="false"}
+## Github Repo Link
+
+[Final Project II - Progress Memo II](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
+:::
+
+```{r}
+#| label: loading-packages
+#| echo: false 
+
+library(here)
+library(tidyverse)
+library(tidymodels)
+
+```
+
+## Assessment Metric 
+
+## Analysis Plan
+
+- Data Splitting
+- Resampling Technique
+- Model Types
+- Amount of recipes 
+- Need to map this out in Github Repo as well, with place holder R scripts 
+
+## Have Two Model Types Defined and Fitted 
+
+- Null Model 
+- Other Model Type (Linear or Logistic Model)
+- Demonstrate their fits are successful by displaying a table that contains each model's assessment metric value 
+
+## Summary of Progress 
+
+- where they are at 
+- what next steps will be 
+- identifying and potential issues or concerns 
