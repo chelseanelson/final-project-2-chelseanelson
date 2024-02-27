@@ -1,6 +1,6 @@
 # Final Project II ----
 # Initial data checks & data splitting
-# BE AWARE: there is a random process in this script (seed set right before it)
+# BE AWARE: there are random processes in this script (seed set right before them)
 
 # load packages ----
 library(tidyverse)
@@ -13,14 +13,14 @@ tidymodels_prefer()
 # loading datasets
 diabetes_data_large <- read_csv(here("data/raw/diabetes_012_health_indicators_BRFSS2015.csv")) %>% 
   janitor::clean_names() 
-diabetes_data_small <- read_csv(here("data/raw/diabetes_binary_5050split_health_indicators_BRFSS2015.csv")) %>% 
+diabetes_data_small <- read_csv(here("data/raw/diabetes_binary_5050split_health_indicators_BRFSS2015.csv")) %>%
   janitor::clean_names()
 
 # skimming the data
 diabetes_data_large %>% skimr::skim_without_charts()
 diabetes_data_small %>% skimr::skim_without_charts()
 
-# manipulating data 
+# early manipulation of data 
 diabetes_data_large <- diabetes_data_large %>%
   mutate(
     diabetes_012 = factor(diabetes_012, labels = c("no diabetes", "prediabetes", "diabetes"))
@@ -58,11 +58,11 @@ ggsave(here("figures/figure-2.png"), diabetes_univariate_small)
 # small group (pre-diabetes and diabetes).
 
 # According to an ADA expert panel, up to 70% of individuals with prediabetes 
-# will eventually develop diabetes.
+# will eventually develop diabetes. 
 
+# additional manipulations
 diabetes_data_large <- diabetes_data_large %>%
   mutate(
-    diabetes_012 = factor(diabetes_012, labels = c("no diabetes", "prediabetes", "diabetes")),
     diabetes_012 = fct_collapse(diabetes_012, 
                                 diabetes = c("prediabetes", "diabetes")),
     high_bp = factor(high_bp),
@@ -89,6 +89,9 @@ diabetes_data_large <- diabetes_data_large %>%
 diabetes_data_diabetes_level <- diabetes_data_large %>% filter(diabetes_binary == "diabetes") 
 
 # creating none diabetic only dataset
+# set seed for random sample
+set.seed(1234)
+
 diabetes_data_no_diabetes_level <- diabetes_data_large %>% filter(diabetes_binary == "no diabetes") %>%
   slice_sample(n = 39977)
 
@@ -118,7 +121,6 @@ diabetes_folds <- vfold_cv(diabetes_train, v = 10, repeats = 5, strata = diabete
 
 # set up controls for fitting resamples
 keep_pred <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
-
 
 # write out split, train, test and folds 
 save(diabetes_splits, file = here("data/model_data/diabetes_splits.rda"))
