@@ -29,8 +29,8 @@ baseline_naive_bayes_rec <-
   recipe(diabetes_binary ~ ., 
          data = diabetes_train) %>% 
   step_zv(all_predictors()) %>%
-  step_center(all_predictors()) %>% 
-  step_scale(all_predictors())
+  step_center(all_numeric_predictors()) %>% 
+  step_scale(all_numeric_predictors())
 
 # check recipe 
 baseline_rec %>%
@@ -38,10 +38,10 @@ baseline_rec %>%
   bake(new_data = NULL) %>%
   glimpse()
 
-#baseline_naive_bayes_rec %>% 
-#  prep() %>%
-#  bake(new_data = NULL) %>%
-#  glimpse()
+baseline_naive_bayes_rec %>% 
+  prep() %>%
+  bake(new_data = NULL) %>%
+  glimpse()
 
 # recipe 2 ----
 

@@ -6,6 +6,8 @@ library(tidyverse)
 library(tidymodels)
 library(here)
 library(discrim)
+library(doMC)
+library(klaR)
 
 # handle common conflicts
 tidymodels_prefer()
@@ -20,29 +22,25 @@ load(here("data/model_data/diabetes_folds.rda"))
 
 # load pre-processing/feature engineering/recipe
 load(here("data/recipes/baseline_naive_bayes_rec.rda"))
-load(Here("data/recipes/baseline_rec.rda"))
-
-################################################################################
-# Naive Bayes Model ----
-################################################################################
+load(here("data/recipes/baseline_rec.rda"))
 
 # model specifications ----
-nb_model <-
+nbayes_model <-
   naive_Bayes() %>%
   set_mode("classification") %>%
   set_engine("klaR")
 
 # define workflows ----
-nb_wflow <-
+nbayes_wflow <-
   workflow() %>% 
-  add_model(nb_model) %>% 
+  add_model(nbayes_model) %>% 
   add_recipe(baseline_naive_bayes_rec)
 
 # fit workflows/models ----
-keep_pred <- control_resamples(save_pred = TRUE)
+keep_pred <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
 
-fit_folds_nb <- fit_resamples(
-  nb_wflow,
+fit_folds_nbayes <- fit_resamples(
+  nbayes_wflow,
   resamples = diabetes_folds,
   control = keep_pred
 )
@@ -52,27 +50,27 @@ fit_folds_nb <- fit_resamples(
 ##########################################################################
 
 # model specifications ----
-lg_model <-
+logistic_model <-
   logistic_reg() %>%
   set_mode("classification") %>%
   set_engine("glm")
 
 # define workflows ----
-lg_wflow <-
+logistic_wflow <-
   workflow() %>% 
-  add_model(lg_model) %>% 
+  add_model(logistic_model) %>% 
   add_recipe(baseline_rec)
 
 # fit workflows/models ----
-keep_pred <- control_resamples(save_pred = TRUE)
+keep_pred <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
 
-fit_folds_lg <- fit_resamples(
-  lg_wflow,
+fit_folds_logistic <- fit_resamples(
+  logistic_wflow,
   resamples = diabetes_folds,
   control = keep_pred
 )
 
 # write out results (fitted/trained workflows) ----
-save(fit_folds_lg, file = here("data/fitted_data/fit_folds_lg.rda"))
-save(fit_folds_nb, file = here("data/fitted_data/fit_folds_nb.rda"))
+save(fit_folds_logistic, file = here("data/fitted_models/fit_folds_logistic.rda"))
+save(fit_folds_nbayes, file = here("data/fitted_models/fit_folds_nbayes.rda"))
 
