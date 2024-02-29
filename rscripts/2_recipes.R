@@ -14,7 +14,7 @@ load(here("data/model_data/diabetes_train.rda"))
 
 # build recipes
 
-# basic recipe ----
+# recipe 1 (baseline) ----
 
 ## variation 1 
 baseline_rec <- recipe(diabetes_binary ~ ., 
@@ -43,8 +43,29 @@ baseline_naive_bayes_rec %>%
   bake(new_data = NULL) %>%
   glimpse()
 
-# recipe 2 ----
+# recipe 2 (tree-based and k-nearest neighbors) ----
+
+# expand on these
+
+diabetes_rec_treebased <- recipe(diabetes_binary ~ ., 
+                       data = diabetes_train) %>% 
+  step_dummy(all_nominal_predictors()) %>%
+  step_zv(all_predictors()) %>%
+  step_center(all_predictors()) %>% 
+  step_scale(all_predictors())
+
+diabetes_rec_knn <- recipe(diabetes_binary ~ ., 
+                           data = diabetes_train) %>% 
+  step_dummy(all_nominal_predictors()) %>%
+  step_zv(all_predictors()) %>%
+  step_center(all_predictors()) %>% 
+  step_scale(all_predictors()) 
+
+# recipe 3 (neural networks) ----
+
 
 # write out recipe(s) 
 save(baseline_rec, file = here("data/recipes/baseline_rec.rda"))
 save(baseline_naive_bayes_rec, file = here("data/recipes/baseline_naive_bayes_rec.rda"))
+save(diabetes_rec_treebased, file = here("data/recipes/diabetes_rec_treebased.rda"))
+save(diabetes_rec_knn, file = here("data/recipes/diabetes_rec_knn.rda"))
