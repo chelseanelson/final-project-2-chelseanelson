@@ -38,31 +38,85 @@ library(tidymodels)
 
 ## Assessment Metric 
 
+The primary assessment metric for the analysis will be accuracy. Accuracy provides 
+a clear measure of the overall correctness of the model's predictions, indicating
+the proportion of correctly classified instances out of the total number of instances. 
+
 ## Analysis Plan
 
-- Data Splitting
-- Resampling Technique
-- Model Types
-- Amount of recipes 
-- Need to map this out in Github Repo as well, with place holder R scripts 
+There has been an update to the dataset I will be using since the last progress memo. 
+I have created my own 50-50 split to take care of class imbalances from the 
+original larger dataset. Within this 50-50 split, I also changed my predictive 
+variable which looks at if a person has diabetes or not, from including 3 
+levels to only having 2. Within this change, I combined the `pre-diabetes` 
+and `diabetes` levels into one representing now having or close to having 
+diabetes. I decide to combine in this manner as according to an ADA expert 
+panel, up to 70% of individuals with prediabetes will eventually develop diabetes. 
+I have stored this newly created dataset as `data/diabetes_data.rds`.
+
+Data Splitting: The dataset was split into training and testing sets using a 
+75-25 split. This is because I felt that there are a lot of instances in my 
+dataset thus I could put more of that data into the testing set then I 
+normally do with a regular 80-20 split. 
+
+Resampling Technique: Cross-validation was employed using 10 folds with 
+5 repeats to robustly estimate the models' performance and account for 
+potential variability in the data. Thus each model type will be fitted 50 times.  
+
+Model Types: I have selected to use the Naive Bayes, Logistic Regression, 
+Random Forest, Boosted Tree, $k$-Nearest Neighbors, and a Single-Layer Neural 
+Network models for my model analysis. 
+
+Amount of Recipes: In total, I hope to use 2-3 recipes, each with around 1-2 
+variants, in order to explore different preprocessing techniques and 
+model configurations. 
 
 ## Have Two Model Types Defined and Fitted 
 
-- Null/Baseline Model
-- Other Model Type (Linear or Logistic Model)
-- Demonstrate their fits are successful by displaying a table that contains each model's assessment metric value 
+The initial models that I have developed and fitted include my baseline model, 
+the Naive Bayes model, and the Logistic Regression model. A full overview of 
+the creation and fitting of both models can be found in `rscripts/3_fit_nbayes.R` 
+and `rscripts/3_fit_logistic.R` respectively. Since both of these did not 
+have any hyperparameters, I did not tune either model. Full model analyses of the 
+two models can be found in `rscripts/4_model_analysis.R`, however I have provided 
+the associated assessment metric values for both below. 
+
+```{r}
+#| label: assessment_metric_table
+#| echo: false 
+
+read_rds(here("results/tuned_models/nbayes_logistic_accuracy_model.rds")) %>% knitr::kable()
+
+```
+
+From the table, we see that on average, the accuracy level of the Logistic 
+Regression model outperformed the Naive Bayes model. As across the 50 
+resamples, the mean accuracy value for the Naive Bayes model was approximately 
+68%, with a standard error of around 0.0006, meaning that there is not a lot of 
+variation in the accuracy values for each individual resample. This means 
+that out of the total number of predictions made by the Naive Bayes model 
+resamples, on average, 68% of the predictions were correct. 
+
+Whereas for the Logistic Regression model across the 50 resamples, the mean
+accuracy was approximately 74%, with a standard error of around .0008, thus 
+also meaning that there is not a lot of variation in the accuracy value for 
+each individual resample. This means that out of the total number of predictions
+made by the Naive Bayes model resamples, on average, 74% of the predicitions 
+were correct. 
+
+Despite both models being more baseline, they seem to have pretty good accuracy 
+values, this means that I should probably use the recipes that I have 
+created and elevate them and add more in-depth preprocessing features 
+for the more deep learning heavy models.
 
 ## Summary of Progress 
 
-- where they are at 
-- what next steps will be 
-- identifying and potential issues or concerns 
+In terms of my current progress, I am also working to create the tree-based models 
+and $k$-Nearest Neighbors recipes, preparing them for tuning and evaluation. 
+Additionally, my next steps afterwards include completing work on the stated 
+above models, while also subsequently, moving my attention to the last model, 
+the Single Layer Neural Network model,as well. Furthermore, I want to work more
+the creation of better readme files as well as creating the associated codebook
+for my dataset. 
 
-
-Students are expected to demonstrate that significant progress has been made on their final project since the submission of Progress Memo 1. Students should have
-
-an analysis plan (data splitting, model types, recipes, assessment metric, etc) mapped out and started,
-their baseline/null model properly defined and fitted, and
-one other model type should be properly defined and fitted, and
-fitted results displayed in a table.
-Students should summarize their progress, where they are at, and what their next steps will be. Identifying and potential issues or concerns would be a good idea too.
+Lastly, no significant issues are currently anticipated for my modeling process.
