@@ -15,25 +15,21 @@ load(here("data/fitted_models/fit_folds_logistic.rda"))
 load(here("data/fitted_models/fit_folds_nbayes.rda"))
 
 # comparing sub-models ----
-## KNN
-knn_plot <- knn_tuned %>% autoplot(metric = "rmse")
-knn_best <- select_best(knn_tuned, metric = "rmse") %>% select(-.config)
+## Logistic Regression
+logistic_best <- select_best(fit_folds_logistic, metric = "accuracy") 
 
-# Random Forest
-rf_plot <- rf_tuned %>% autoplot(metric = "rmse")
-rf_best <- select_best(rf_tuned, metric = "rmse") %>% select(-.config)
+## Naive Bayes 
+nbayes_best <- select_best(fit_folds_nbayes, metric = "accuracy")
 
-# Boosted Tree
-bt_plot <- bt_tuned %>% autoplot(metric = "rmse")
-bt_best <- select_best(bt_tuned, metric = "rmse") %>% select(-.config)
+model_results <- as_workflow_set(logisitic = fit_folds_logistic, nbayes = fit_folds_nbayes)
 
-
-
-model_results <- as_workflow_set(knn = knn_tuned, rf = rf_tuned, bt = bt_tuned)
-
-comparison_rmse_model <- model_results %>%
+nbayes_logistic_accuracy_model <- model_results %>%
   collect_metrics() %>%
-  filter(.metric == "rmse") %>%
+  filter(.metric == "accuracy") %>%
   slice_min(mean, by = wflow_id) %>% 
   arrange(mean) %>%
-  select(wflow_id, mean, std_err, n) 
+  select(wflow_id, .metric, mean, std_err, n) %>%
+  rename(metric = .metric)
+
+# write out results (plots, tables)
+write_rds(nbayes_logistic_accuracy_model, file = here("results/tuned_models/nbayes_logistic_accuracy_model.rds"))
