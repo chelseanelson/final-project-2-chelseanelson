@@ -21,8 +21,8 @@ baseline_rec <- recipe(diabetes_binary ~ .,
                        data = diabetes_train) %>% 
   step_dummy(all_nominal_predictors()) %>%
   step_zv(all_predictors()) %>%
-  step_center(all_predictors()) %>% 
-  step_scale(all_predictors())
+  step_center(all_numeric_predictors()) %>% 
+  step_scale(all_numeric_predictors())
 
 # variation 2 
 baseline_naive_bayes_rec <-

@@ -85,7 +85,7 @@ the associated assessment metric values for both below.
 #| label: assessment_metric_table
 #| echo: false 
 
-read_rds(here("results/tuned_models/nbayes_logistic_accuracy_model.rds")) %>% knitr::kable()
+read_rds(here("results/nbayes_logistic_accuracy_model.rds")) %>% knitr::kable()
 
 ```
 
