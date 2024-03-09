@@ -1,5 +1,5 @@
 # Final Project II ----
-# Define and fit boosted tree model 
+# Define, fit and tune kitchen sink boosted tree model 
 # BE AWARE: there is a random process in this script (seed set right before it)
 
 # load packages ----
@@ -17,10 +17,10 @@ registerDoMC(cores = num_cores)
 tidymodels_prefer()
 
 # load folded data
-load(here("data/model_data/carseats_folds.rda"))
+load(here("data/model_data/diabetes_folds.rda"))
 
 # load pre-processing/feature engineering/recipe
-load(here("data/recipes/diabetes_rec_treebased.rda"))
+load(here("data/recipes/baseline_tree_rec.rda"))
 
 # model specifications ----
 bt_model <-
@@ -28,7 +28,8 @@ bt_model <-
     mode = "classification",
     mtry = tune(),
     min_n = tune(),
-    learn_rate = tune() #figure out what I want to tune 
+    learn_rate = tune(),
+    trees = tune()
   ) %>% 
   set_engine("xgboost")
 
@@ -36,7 +37,7 @@ bt_model <-
 bt_wflow <-
   workflow() %>% 
   add_model(bt_model) %>% 
-  add_recipe(diabetes_rec_treebased)
+  add_recipe(baseline_tree_rec)
 
 # hyperparameter tuning values ----
 
@@ -45,13 +46,14 @@ hardhat::extract_parameter_set_dials(bt_model)
 
 # change hyperparameter ranges
 bt_params <- extract_parameter_set_dials(bt_model) %>% 
-  # N:= maximum number of random predictor columns we want to try 
-  # should be less than the number of available columns
-  update(mtry = mtry(c(1, 14)),
-         learn_rate = learn_rate(range = c(-5, -0.2))) # figure out what I want here
+  update(mtry = mtry(c(1, 7)),
+         learn_rate = learn_rate(range = c(-5, -0.2)),
+         trees = trees(range = c(100, 2000)))
 
 # build tuning grid
-bt_grid <- grid_regular(bt_params, levels = 5)
+bt_grid <- grid_regular(bt_params, 
+                        levels = c(mtry = 6, learn_rate = 10, 
+                                   min_n = 4, trees = 6))
 
 # fit workflows/models ----
 # set seed

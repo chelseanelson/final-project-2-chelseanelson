@@ -1,0 +1,128 @@
+---
+title: "Diabetes Classifications Models"
+subtitle: |
+  | Final Project 
+  | Data Science 2 with R (STAT 301-2)
+author: "Chelsea Nelson"
+date: today
+format:
+  html:
+    
+    toc: true
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+from: markdown+emoji 
+editor: 
+  markdown: 
+    wrap: 72
+---
+::: {.callout-tip icon="false" appearance="simple"}
+## Github Repo Link
+
+[Final Project II Repo](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
+:::
+
+```{r}
+#| label: loading-packages 
+#| echo: false 
+
+library(tidyverse)
+library(DT)
+library(tidymodels)
+library(here)
+library(knitr)
+
+```
+
+```{r}
+#| label: loading-data 
+
+
+
+```
+
+## Introduction
+
+Introduction to problem(s)/objective(s). Discuss why you are trying to predict this variable (motivation). Why is this useful? Describe the data source(s) you will use to build a predictive model. If you are obtaining information from websites you should site these in the references section.
+
+## Data Overview & Quality 
+
+- At a minimum the response variable should be explored and analyzed in detail. Along with an inspection of the data for missingness and severe class imbalance of categorical data
+   - This should be conducted on the entire dataset 
+
+- Further explorations such as exploring relationships and transformations should be conducted on either a standalone dataset used only for EDA or some portion of the training dataset from the initial split 
+  - Data from the final testing dataset should not be used for this 
+  - This is a key step in feature engineering
+      - Can also do interactions based on references 
+  - Thorough EDA might be called for – can be put in an appendix and only a short summary could be discussed in this section 
+  
+- This can also include here I talk about how I made my data sets and why I took these steps 
+
+## Methods
+
+- Cover the data splitting procedure and clearly identify what type of prediction problem it is 
+- State and describe the model types you will be fitting 
+- Describe any parameters that will be tuned
+    - What are the ranges to be used?
+    - How many different values are you looking at?
+    - What is the grid size of the parameter?
+    - What type of iterations are you using?
+ 
+- Describe what recipes will be used
+  - In some cases an extended discussion about recipe variations might be useful
+      - Especially if students are using recipe variation to try and explore the predictive importance of certain            variables  
+  - Explain what i did in each recipe and why I did it 
+      - “I created a recipe that includes the removal of zero variance. I did this because…”
+
+- Describe the resampling technique used
+- Explain the metric that will be used to compare and ultimately used to select a final model
+- **Do more than just saying what I did but rather, also why I did it and why I didn’t do something else instead. Why is this happening? Do I understand why I did it?**
+
+## Model Building 
+
+- Should reiterate the metric that will be used to compare models and determine which will be the final/winning model
+- Include a table of the best performing model results. 
+    - With the best on top and the worst on the bottom
+
+- Review and analysis of tuning parameters should happen here
+    - Should further tuning be explored?
+    - Or should tuning be adjusted when fitting data like this in the future
+    - Good section to describe what the bester parameters were for each model type 
+    - Could put this in an appendix 
+
+- Could include a discussion comparing any systematic differences in performance between model types or recipes 
+- If variations in recipes were used to explore predictive important of certain variables, then it should be discussed here
+- The section will likely end with the selection of the final/winning model (provide reasoning).
+    - Was it surprising or not surprising that this particular model won? Explain.
+
+### Final Model Analysis
+
+- Where you fit your final/winning model to the full training and then testing data
+- Assess the final model’s performance with at least the metric used to determine the winning model, could also use other metrics as well 
+- Should include an exploration of predictions vs the true values (confusion matrix)
+- Is the model any good? IT might be the best of the models you tried, but does the effort of building a predictive model really pay off – is it that much better than a baseline/null model?
+- Were there any features of the model you selected that make it the best (e.g. fits nonlinearity well)?
+
+## Conclusions 
+
+- State any conclusions or discoveries/insights. 
+- This is a great place for future work, new research questions, and next steps 
+
+## References {#sec-references}
+
+  1. Name [site](site)
+
+  2. Name [site](site)
+
+  3. Name [site](site) 
+
+## Appendix 
+
+### Appendix I: Technical Info {#sec-technical_info}
+
+### Appendix II: EDA {#sec-EDA}
+
+### Appendix III: Extras {#sec-extras}
+

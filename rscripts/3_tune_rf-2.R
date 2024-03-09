@@ -1,5 +1,5 @@
 # Final Project II ----
-# Define and fit random forest model 
+# Define, fit and tune feature engineering random forest model 
 # BE AWARE: there is a random process in this script (seed set right before it)
 
 # load packages ----
@@ -17,10 +17,10 @@ registerDoMC(cores = num_cores)
 tidymodels_prefer()
 
 # load folded data
-load(here("data/model_data/carseats_folds.rda"))
+load(here("data/model_data/diabetes_folds.rda"))
 
 # load pre-processing/feature engineering/recipe
-load(here("data/recipes/diabetes_rec_treebased.rda"))
+load(here("data/recipes/feature_eng_tree_rec.rda"))
 
 # model specifications ----
 rf_model <- 
@@ -36,7 +36,7 @@ rf_model <-
 rf_wflow <- 
   workflow() %>% 
   add_model(rf_model) %>%
-  add_recipe(diabetes_rec_treebased)
+  add_recipe(feature_eng_tree_rec)
 
 # hyperparameter tuning values ----
 
@@ -45,16 +45,17 @@ hardhat::extract_parameter_set_dials(rf_model)
 
 # change hyperparameter ranges
 rf_params <- extract_parameter_set_dials(rf_model) %>% 
-  update(mtry = mtry(c(1, 14)))  # figure out what I want here
+  update(mtry = mtry(range = c(1, 7)),
+         trees = trees(range = c(100, 2000))) # figure out what I want here, change trees maybe
 
 # build tuning grid
-rf_grid <- grid_regular(rf_params, levels = 5) # and here 
+rf_grid <- grid_regular(rf_params, levels = c(mtry = 6, trees = 6, min_n = 4))
 
 # fit workflows/models ----
 # set seed
 set.seed(123567)
 
-rf_tuned <- 
+rf_tuned_2 <- 
   rf_wflow |> 
   tune_grid(
     diabetes_folds, 
@@ -63,4 +64,4 @@ rf_tuned <-
   )
 
 # write out results (fitted/trained workflows) ----
-save(rf_tuned, file = here("data/tuned_models/rf_tuned.rda"))
+save(rf_tuned_2, file = here("data/tuned_models/rf_tuned_2.rda"))

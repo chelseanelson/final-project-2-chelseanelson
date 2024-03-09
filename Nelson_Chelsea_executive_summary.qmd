@@ -1,0 +1,38 @@
+---
+title: "Diabetes Classifications Models Executive Summary"
+subtitle: |
+  | Final Project 
+  | Data Science 2 with R (STAT 301-2)
+author: "Chelsea Nelson"
+date: today
+format:
+  html:
+    
+    toc: true
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+from: markdown+emoji 
+editor: 
+  markdown: 
+    wrap: 72
+---
+::: {.callout-tip icon="false" appearance="simple"}
+## Github Repo Link
+
+[Final Project II Repo](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
+:::
+
+- Should summarize the key points of the report
+
+## Purpose 
+
+- Should restate the purpose of the report
+- What the dataset is, what we are predicting, and why I am doing this 
+
+## Major Results
+
+- Most important results (i.e. table of the full comparison between models, looking at how the best model performs across different metrics, a confusion matrix for my best model) 
+
+## Conclusions 

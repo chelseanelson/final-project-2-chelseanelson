@@ -98,6 +98,19 @@ diabetes_data_no_diabetes_level <- diabetes_data_large %>% filter(diabetes_binar
 # creating the full dataset now 
 diabetes_data <- bind_rows(diabetes_data_no_diabetes_level, diabetes_data_diabetes_level) 
 
+# checking the data 
+diabetes_data %>% skimr::skim_without_charts()
+
+# There is no missing data in this dataset !!
+
+# checking the response variable 
+diabetes_data_response_var <- diabetes_data %>% ggplot(aes(diabetes_binary)) + 
+  geom_bar() +
+  labs(title = "Distribution of Diabetes Diagnoses", x = "Diabetes Diagnoses",
+       y = "Count") + theme_minimal() 
+
+ggsave(diabetes_data_response_var, file = here("figures/figure-3.png"))
+
 # writing out updated data
 write_rds(diabetes_data, here("data/diabetes_data.rds")) 
 

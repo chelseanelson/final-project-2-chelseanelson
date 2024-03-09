@@ -1,12 +1,12 @@
 # Final Project II ----
-# Define and fit k-nearest neighbors model 
+# Define, fit, and tune feature engineering netural networks model 
 # BE AWARE: there is a random process in this script (seed set right before it)
 
 # load packages ----
 library(tidyverse)
 library(tidymodels)
 library(here)
-library(kknn)
+library(nnet)
 library(doMC)
 
 # set up parallel processing 
@@ -17,46 +17,49 @@ registerDoMC(cores = num_cores)
 tidymodels_prefer()
 
 # load folded data
-load(here("data/model_data/carseats_folds.rda"))
+load(here("data/model_data/diabetes_folds.rda"))
 
 # load pre-processing/feature engineering/recipe
-load(here("data/recipes/diabetes_rec_knn.rda"))
+load(here("data/recipes/feature_eng_rec.rda"))
 
 # model specifications ----
-knn_model <- 
-  nearest_neighbor(mode = "classification",
-                   neighbors = tune()) %>% #figure out what I want to tune here
-  set_engine("kknn")
+nnet_model <- 
+  mlp(mode = "classification",
+      penalty = tune(),
+      epochs = tune(),
+      hidden_units = tune()) %>% 
+  set_engine("nnet")
 
 # define workflows ----
-knn_wflow <-
+nnet_wflow <-
   workflow() %>%
-  add_model(knn_model) %>%
-  add_recipe(diabetes_rec_knn)
+  add_model(nnet_model) %>%
+  add_recipe(feature_eng_rec)
 
 # hyperparameter tuning values ----
 
 # check ranges for hyperparameters
-hardhat::extract_parameter_set_dials(knn_model)
+hardhat::extract_parameter_set_dials(nnet_model)
 
 # save hyperparameter ranges
-knn_params <- extract_parameter_set_dials(knn_model)
+nnet_params <- extract_parameter_set_dials(nnet_model)
+# update stuff now 
 
 # build tuning grid
-knn_grid <- grid_regular(knn_params, levels = 5) # also how many levels I want 
+nnet_grid <- grid_regular(nnet_params, levels = 5)
 
 # fit workflows/models ----
 
 # set seed
-set.seed(1235)
+set.seed(12352)
 
-knn_tuned <- 
-  knn_wflow |> 
+nnet_tuned_2 <- 
+  nnet_wflow |> 
   tune_grid(
     diabetes_folds, 
-    grid = knn_grid, 
+    grid = nnet_grid, 
     control = control_grid(save_workflow = TRUE)
   )
 
 # write out results (fitted/trained workflows) ----
-save(knn_tuned, file = here("data/tuned_models/knn_tuned.rda"))
+save(nnet_tuned_2, file = here("data/tuned_models/nnet_tuned_2.rda"))
