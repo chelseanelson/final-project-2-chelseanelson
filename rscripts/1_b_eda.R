@@ -31,7 +31,7 @@ univariate_continuous <- function(df, numerical_var, filename) {
       title = paste("Distribution of", quo_name(ensym(numerical_var))),
       y = "Count"
     ) + 
-    theme_light()
+    theme_minimal()
  
  ggsave(here(paste0("figures/univariate-EDA/" ,filename, ".png")), g)
 }
@@ -58,7 +58,7 @@ diabetes_eda_data %>% univariate_continuous(income, "numerical_univariate_6")
 # The data is again somewhat right skewed thus we might want to perform a log10 transformation on this
 
 # log10 transformation of bmi
-numerical_univariate_7 <- diabetes_eda_data %>% ggplot(aes(bmi)) + geom_histogram() + scale_x_continuous(trans = "log10")
+numerical_univariate_7 <- diabetes_eda_data %>% ggplot(aes(bmi)) + geom_histogram() + scale_x_continuous(trans = "log10") + labs(title = "Distribution of bmi (log-10)", y = "Count") + theme_minimal()
 
 ggsave(here("figures/univariate-EDA/numerical_univariate_7.png"), numerical_univariate_7)
 
@@ -74,7 +74,7 @@ univariate_discrete <- function(df, categorical_var) {
         str_replace_all(quo_name(ensym(categorical_var)), "_", " ")),
       y = "Count"
     ) + 
-    theme_light()
+    theme_minimal()
 }
 
 cateogorical_univariate_1 <- diabetes_eda_data %>% univariate_discrete(chol_check) + 
