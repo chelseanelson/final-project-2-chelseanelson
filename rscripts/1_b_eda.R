@@ -22,9 +22,9 @@ diabetes_eda_data %>% skimr::skim_without_charts()
 
 ## continuous variables ---- 
 
-univariate_continuous <- function(df, numerical_var) {
+univariate_continuous <- function(df, numerical_var, filename) {
   
-  df %>% 
+ g <- df %>% 
     ggplot(aes( {{ numerical_var }} )) + 
     geom_histogram(color = "white") + 
     labs(
@@ -32,26 +32,35 @@ univariate_continuous <- function(df, numerical_var) {
       y = "Count"
     ) + 
     theme_light()
+ 
+ ggsave(here(paste0("figures/univariate-EDA/" ,filename, ".png")), g)
 }
 
-numerical_univariate_1 <- diabetes_eda_data %>% univariate_continuous(bmi)
+diabetes_eda_data %>% univariate_continuous(bmi, "numerical_univariate_1")
 # this is extremely left skewed, thus we might want to perform a log10 transformation on this
 
-numerical_univariate_2 <- diabetes_eda_data %>% univariate_continuous(ment_hlth)
+diabetes_eda_data %>% univariate_continuous(ment_hlth, "numerical_univariate_2")
 # This data is very sparse, thus we might want to put fillers in this
+# Do not add log10 to this plot, it made it all NaN
 
-numerical_univariate_3 <- diabetes_eda_data %>% univariate_continuous(phys_hlth)
+diabetes_eda_data %>% univariate_continuous(phys_hlth, "numerical_univariate_3")
 # The data is also very sparse, thus we might want to move them more to the middle or creating a more
 # normal distribution somehow 
+# Do not add log10 to this plot, it made it all NaN
 
-numerical_univariate_4 <- diabetes_eda_data %>% univariate_continuous(age)
+diabetes_eda_data %>% univariate_continuous(age, "numerical_univariate_4")
 # The age variable is somewhat right skewed thus we might want to perform a log10 transformation on this
 
-numerical_univariate_5 <- diabetes_eda_data %>% univariate_continuous(education)
+diabetes_eda_data %>% univariate_continuous(education, "numerical_univariate_5")
 # The data is somewhat right skewed thus we might want to perform a log10 transformation on this 
 
-numerical_univariate_6 <- diabetes_eda_data %>% univariate_continuous(income)
-# The data is again somewhat right skewed thus we might want to perform a log10 transformation on this 
+diabetes_eda_data %>% univariate_continuous(income, "numerical_univariate_6")
+# The data is again somewhat right skewed thus we might want to perform a log10 transformation on this
+
+# log10 transformation of bmi
+numerical_univariate_7 <- diabetes_eda_data %>% ggplot(aes(bmi)) + geom_histogram() + scale_x_continuous(trans = "log10")
+
+ggsave(here("figures/univariate-EDA/numerical_univariate_7.png"), numerical_univariate_7)
 
 ## discrete variables ----
 
@@ -306,3 +315,5 @@ diabetes_eda_data %>%
 ### write out plots and eda_data  
 # write out the plots associated with everything i looked at, and then within my 
 # eda I can highlight some and then just showcase the others 
+
+

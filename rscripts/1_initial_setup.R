@@ -107,7 +107,8 @@ diabetes_data %>% skimr::skim_without_charts()
 diabetes_data_response_var <- diabetes_data %>% ggplot(aes(diabetes_binary)) + 
   geom_bar() +
   labs(title = "Distribution of Diabetes Diagnoses", x = "Diabetes Diagnoses",
-       y = "Count") + theme_minimal() 
+       y = "Count") + geom_text(stat = "count", aes(label = ..count..),
+                                vjust = -0.5) + theme_minimal() 
 
 ggsave(diabetes_data_response_var, file = here("figures/figure-3.png"))
 
