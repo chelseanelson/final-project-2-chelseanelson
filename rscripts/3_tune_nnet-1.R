@@ -25,7 +25,6 @@ load(here("data/recipes/baseline_rec.rda"))
 # model specifications ----
 nnet_model <- 
   mlp(mode = "classification",
-      penalty = tune(),
       epochs = tune(),
       hidden_units = tune()) %>% 
   set_engine("nnet")

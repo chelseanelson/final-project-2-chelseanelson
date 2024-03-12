@@ -303,7 +303,6 @@ diabetes_eda_data %>%
 # healthcare, cholesterol check and doctor variables might not actually matter,
 # take these out in the feature engineering recipes 
 
-
-
 ### write out plots and eda_data  
-
+# write out the plots associated with everything i looked at, and then within my 
+# eda I can highlight some and then just showcase the others 

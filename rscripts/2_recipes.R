@@ -65,25 +65,26 @@ baseline_tree_rec %>%
 feature_eng_rec <- recipe(diabetes_binary ~ ., 
                        data = diabetes_train) %>% 
   step_rm(any_healthcare, chol_check, no_docbc_cost) %>%
-  step_dummy(all_nominal_predictors()) %>%
-  # add interactions here 
-  # Yes, step_interact() in a recipe in R can work with two factors (categorical variables). It creates interaction terms between the levels of the specified factors. Note that if your factors have many levels this may create too many predictor variables!
-  # add transformations to handle skewness and class imbalance
-  step_zv(all_predictors()) %>%
-  step_center(all_numeric_predictors()) %>% 
-  step_scale(all_numeric_predictors())
+  step_log(bmi, age, education, income) %>%
+  step_dummy(all_nominal_predictors()) %>% 
+  step_corr(starts_with("high_bp"), starts_with("high_chol"), bmi, 
+            threshold = 0.6) %>%
+  step_interact(terms = ~ starts_with("high_bp"):starts_with("high_chol")) %>% 
+  step_interact(terms = ~ bmi:starts_with("gen_hlth")) %>%
+  step_zv(all_numeric_predictors()) %>%
+  step_normalize(all_numeric_predictors())
 
 ## variation 2 (tree-based)
 
 feature_eng_tree_rec <- recipe(diabetes_binary ~ ., 
                             data = diabetes_train) %>% 
   step_rm(any_healthcare, chol_check, no_docbc_cost) %>% 
+  step_log(bmi, age, education, income) %>%
   step_dummy(all_nominal_predictors(), one_hot = TRUE) %>%
-  # add decorrelation here
-  # add transformations to handle skewness and class imbalance
-  step_zv(all_predictors()) %>%
-  step_center(all_numeric_predictors()) %>% 
-  step_scale(all_numeric_predictors())
+  step_corr(starts_with("high_bp"), starts_with("high_chol"), bmi, 
+            threshold = 0.6) %>%
+  step_zv(all_numeric_predictors()) %>%
+  step_normalize(all_numeric_predictors())
 
 # check recipe 
 feature_eng_rec %>%
@@ -91,7 +92,7 @@ feature_eng_rec %>%
   bake(new_data = NULL) %>%
   glimpse()
 
-feature_eng_rec %>% 
+feature_eng_tree_rec %>% 
   prep() %>%
   bake(new_data = NULL) %>%
   glimpse()

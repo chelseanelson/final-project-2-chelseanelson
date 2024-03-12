@@ -46,7 +46,7 @@ hardhat::extract_parameter_set_dials(rf_model)
 # change hyperparameter ranges
 rf_params <- extract_parameter_set_dials(rf_model) %>% 
   update(mtry = mtry(range = c(1, 7)),
-         trees = trees(range = c(100, 2000))) # figure out what I want here
+         trees = trees(range = c(100, 2000))) # don't tune trees for the feature engineering one
 
 # build tuning grid
 rf_grid <- grid_regular(rf_params, levels = c(mtry = 6, trees = 6, min_n = 4))

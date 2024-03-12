@@ -43,10 +43,9 @@ hardhat::extract_parameter_set_dials(nnet_model)
 
 # save hyperparameter ranges
 nnet_params <- extract_parameter_set_dials(nnet_model)
-# update stuff now 
 
 # build tuning grid
-nnet_grid <- grid_regular(nnet_params, levels = 5)
+nnet_grid <- grid_regular(nnet_params, levels = 4)
 
 # fit workflows/models ----
 

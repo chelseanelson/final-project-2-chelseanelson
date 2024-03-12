@@ -25,7 +25,7 @@ load(here("data/recipes/feature_eng_tree_rec.rda"))
 # model specifications ----
 knn_model <- 
   nearest_neighbor(mode = "classification",
-                   neighbors = tune()) %>% #figure out what I want to tune here
+                   neighbors = tune()) %>% 
   set_engine("kknn")
 
 # define workflows ----
@@ -40,9 +40,7 @@ knn_wflow <-
 hardhat::extract_parameter_set_dials(knn_model)
 
 # save hyperparameter ranges
-knn_params <- extract_parameter_set_dials(knn_model) %>%
-  update(neighbors = neighbors(range = c(1,15)))
-# might not update get rid of this part
+knn_params <- extract_parameter_set_dials(knn_model)
 
 # build tuning grid
 knn_grid <- grid_regular(knn_params, levels = 5)

@@ -26,7 +26,6 @@ editor:
 
 ```{r}
 #| label: loading-packages 
-#| echo: false 
 
 library(tidyverse)
 library(DT)
@@ -36,64 +35,270 @@ library(knitr)
 
 ```
 
-```{r}
-#| label: loading-data 
-
-
-
-```
-
 ## Introduction
 
-Introduction to problem(s)/objective(s). Discuss why you are trying to predict this variable (motivation). Why is this useful? Describe the data source(s) you will use to build a predictive model. If you are obtaining information from websites you should site these in the references section.
+The prediction objective at hand is to predict an individual's diabetes
+diagnoses based on general health questions. This objective is a
+binary classification problem, as the goal is to successfully identify someone as 
+either having diabetes or not having diabetes.
+
+My motivation for pursuing this particular problem is because I am
+interested in seeing what factors of everyday life seem to play a role in
+the diagnosing of diabetes. This information is important as it 
+can help zoom into the variables that play a large part in if someone 
+has diabetes or not, as well as it helps to limit the amount of people who 
+do have diabetes as we can successfully understand to some extent why people
+develop having diabetes. 
+
+I will be using the Centers for Disease Control and Prevention's (CDC)
+survey data from their Behavioral Risk Factor Surveillance System
+(BRFSS) which is a health-related telephone survey. Although looking at
+multiple aspects of life through these telephone surveys, I will specifically 
+being looking at the Diabetes Health Indicators Dataset which contains
+statistics and lifestyle survey information about people in general
+along with their diagnosis of diabetes. More information related to this dataset
+can be found in [References](@sec-references) section, with both the official CDC website as
+well as the Kaggle page which I collected the data from.
 
 ## Data Overview & Quality 
 
-- At a minimum the response variable should be explored and analyzed in detail. Along with an inspection of the data for missingness and severe class imbalance of categorical data
-   - This should be conducted on the entire dataset 
+![Univariate Analysis - Diabetes Diagnosis (Original Version)](figures/figure-1.png){#fig-1}
 
-- Further explorations such as exploring relationships and transformations should be conducted on either a standalone dataset used only for EDA or some portion of the training dataset from the initial split 
-  - Data from the final testing dataset should not be used for this 
-  - This is a key step in feature engineering
-      - Can also do interactions based on references 
-  - Thorough EDA might be called for – can be put in an appendix and only a short summary could be discussed in this section 
-  
-- This can also include here I talk about how I made my data sets and why I took these steps 
+In the original version of the dataset, there was severe class imbalance in our 
+response variable of diabetes diagonsis. This can be shown in @fig-1. Additionally,
+within this original version, there were three types of diagnoses that someone 
+could potentially receive: no diabetes, prediabetes, or diabetes. 
 
-## Methods
+In order to take care of this class imbalance however, I made an update to the 
+dataset. I created my own random 50-50 split from the original larger dataset. 
+Within this 50-50 split, I also changed my response variable from including three 
+levels of classifications to only having 2, diabetes or no diabetes. 
+Within this change, I combined the `pre-diabetes` and `diabetes` levels into 
+one representing now having or close to having diabetes, thus then
+randomly downsampling the larger `no diabetes` level. I decide to combine the levels 
+in this manner as according to an ADA expert panel, up to 70% of individuals 
+with prediabetes will eventually develop diabetes, more information on this can 
+be located in the [References](@sec-references). 
 
-- Cover the data splitting procedure and clearly identify what type of prediction problem it is 
-- State and describe the model types you will be fitting 
+After making these necessary changes, the response variable no longer has severe
+class imbalance thus being able to have my model make better predictions, 
+as class imbalance can lead to biased models that favor the majority class, thus 
+performing poorly on predicting the minority class. Furthermore, this then 
+accounts for many misleading interpretations of the model performance metrics
+that could have arisen, allowing for me to be able to generalize the model's 
+predictions better. 
+
+![Univariate Analysis - Diabetes Diagnosis (Updated Version)](figures/figure-3.png){#fig-2}
+(add the actual numbers on top of each bar)
+
+I have visually showcased these changes through @fig-2. We can now see that 
+the two levels are balanced with each consisting of 39977 instances. 
+
+Additionally, it is important to point out that there are no instances of 
+missing data within my dataset, thus I will not have to impute any variables
+later on to take care of its missingness. 
+
+Looking at further explorations of the predictor variables, I will focus on in 
+this section the variables which explored bmi, high blood pressure, 
+cholsterol levels, and the overall general health of the patient, however the 
+rest of the EDA can be observed in [Appendix II: EDA](@sec-EDA). I chose to focus mostly on these 
+variables, as after an extensive EDA, I saw that these variables had the 
+strongest relationships between each other as well as in relationship 
+with our response variable. 
+
+### Univariate Analysis
+
+First I will discuss the univariate distributions of each of the stated above
+variables of interest. (write more here maybe)
+
+Plot 1
+Words about it (speak about how I plan to take care of the skewness by 
+logging this variable as well as the other numeric variables)
+
+Plot 2 
+Words about it 
+
+Plot 3
+Words about it 
+
+Plot 4 
+Words about it 
+
+### Bivariate Analysis
+
+Turning towards looking more at the relationship between each of these 
+variables, overall we see that these variables are extremely related to each other,
+as well as with our response variable, diabetes diagnosis. 
+
+PLot 1 
+
+Plot 2
+
+Plot 3
+
+Plot 4
+
+Plot 5
+
+PLot 6
+
+Plot 7
+
+## Methods {#sec-methods}
+
+In order to conduct and build my predictive models, I decided to 
+split the dataset into training and testing sets using a initial 75-25 split. 
+This is because I felt that since there are a lot of instances in my 
+dataset, I could put more of that data into the testing set then I 
+normally do with a regular 80-20 split. Thus this allowed for more 
+instances to be available for evaluating the performance of the final model, 
+potentially resulting in more reliable estimates of model performance and 
+better generalization to unseen data.
+
+After my initial split, I decided to conduct a cross-validation resampling 
+technique employing 10 folds with 5 repeats to robustly estimate the models'
+performance and account for potential variability in the data. By repeating 
+the cross-validation process 5 times, I am able to obtain more reliable 
+estimates of model performance. Additionally, with 10-fold cross-validation, 
+the training data is divided into 10 roughly equal-sized folds. 
+Each fold serves as both a training and testing set, 
+allowing me to utilize a larger portion of the data for training and 
+testing purposes. This maximizes the use of available data and 
+provides more accurate estimates of model performance. Each
+model type will be fitted 50 times, allowing for good predictions to be made
+in terms of finding the best hyperparameters for my final model. 
+
+Additionally, as stated above it is important acknowledge that I will be conducting 
+a binary classification prediction problem, with the primary assessment metric 
+for the analysis will be accuracy. Accuracy provides a clear measure of the 
+overall correctness of the model's predictions, indicating the proportion of 
+correctly classified instances out of the total number of instances. 
+
+In terms of the model types that I will be fitting, I have selected to use 
+the Naive Bayes, Logistic Regression, Random Forest, Boosted Tree, 
+$k$-Nearest Neighbors, and a Single-Layer Neural Network models for 
+my model analysis. I have decided to use these models as they all provide me
+with an arrangement of models from baseline to highly advanced models to see
+what factors play into discovering diabetes diagnosis in the best manner. 
+
+For each model type, I have taken to tuning different parameters in order
+to see the different results that could be generated wanting to ultimate 
+pick the best model possible. In terms of iteration, I used a regular grid 
+for the tuning process of all of the models, thus where all of the combinations 
+of the hyperparameters within the specified ranges will be evaluated exhaustively.
+
+Naive Bayes : I did not tune any of the parameters for this model as I was 
+using it as my baseline model thus I felt no need to execute or change the 
+given parameters, thus rather just fitting the base values of it to my 
+resamples. 
+
+Logistic Regression: There were no hyperparameters for this model, thus I 
+did not need to tune anything when fitting the kitchen sink version or the feature
+engineering version of the model to my resamples. 
+
+Random Forest : For my kitchen sink random forest model, I decided to tune the 
+`trees`, `min_n`, and `mtry` parameters. The `trees` parameter represents the 
+number of trees to be grown in the random forest. For this hyperparameter I 
+decided to look at a range from 100 to 2000, with increments of 6. Thus I will 
+be looking at around 317 different values for this parameter, with a grid size 
+of 6 levels. The `min_n` parameter represents the minimum number of samples 
+required to split a node in the tree. I decided for this variable to go with 
+the range that they already previous associated with this parameter. However,
+I decide to look at the range with increments of 4. Thus I will be looking at 
+around ___ different values for this parameter, with a grid size of 4 levels. 
+Lastly, I decided to tune the `mtry` parameters which represents the number of 
+variables randomly sampled as candidates at each split. I decided to look at 
+a range from 1 to 7, with increments of 1. Thus I will be looking at 7 different
+values, with a grid size of 1 level. However for my feature engineering random
+forest model, I decided to base what I tune on how well my kitchen sink random
+forest model performed beforehand. Thus for this model, I tuned the ____ 
+parameters. (explain why I did each of these)
+
+Boosted Trees:
+
+$K$-Nearest Neighbors: 
+
+Neutral Network: 
+
 - Describe any parameters that will be tuned
     - What are the ranges to be used?
     - How many different values are you looking at?
     - What is the grid size of the parameter?
     - What type of iterations are you using?
  
-- Describe what recipes will be used
-  - In some cases an extended discussion about recipe variations might be useful
-      - Especially if students are using recipe variation to try and explore the predictive importance of certain            variables  
-  - Explain what i did in each recipe and why I did it 
-      - “I created a recipe that includes the removal of zero variance. I did this because…”
+In total, I made 5 different recipes to be used with my models. Three of those
+models are baseline/kitchen sink recipes, whereas the last two have more 
+feature engineering components. 
 
-- Describe the resampling technique used
-- Explain the metric that will be used to compare and ultimately used to select a final model
-- **Do more than just saying what I did but rather, also why I did it and why I didn’t do something else instead. Why is this happening? Do I understand why I did it?**
+Looking first at the kitchen sink recipes, 
+I first made one specifically for my baseline Naive Bayes model. Within this 
+recipe, I included _____. I did this because ______. I did not dummy or turn 
+numerical my categorical variables for this recipe, as I will do for the rest,
+as the Naive Bayes model is able to work around being given straight categorical
+variables, within no need for change. The second kitchen sink recipe that I created
+was for my parametric models, neutral network and logistic regression models. 
+For this recipe, I included _______. I did this because ______. As this was 
+the kitchen sink/baseline recipe for my models, I decided not to add multiple 
+different factors into its creation. Lastly in terms of my kitchen sink recipes,
+I made one specifically for my tree-based models thus the boosted trees, random
+forest, and $k$-nearest neighbors models. This recipe includes ______. I 
+did this because ______. Unlike the parametric models recipe, I decided to one 
+hot code my categorical variables because ______. 
+
+Turning the attention to my feature engineering recipes, one was designed 
+to again fit my parametric models, being the logistic regression and neutral 
+network models. Whereas the other was fit to work with the tree-based models, 
+being the boosted trees, random forest, and $k$-nearest neighbors models. 
+When observing the former recipe, I now included ______ in addition to the 
+aspects that were already apart of the kitchen sink parametric recipe. I decided
+to add these specific aspects as I felt they would add more complex and definition 
+to the building of my models. Within the latter recipe, I decided to add ______
+in addition to the aspects that were already apart of the kitchen sink tree-based
+recipe. I found these additions necessary as I felt they targeted points of interest 
+or lack there of, in terms of helping produce the best models for predicting 
+diabetes diagnosis. Unlike in the feature engineering parametric recipe, 
+I did not include any interacts between the different predictor variables as 
+the tree-based models already cover for any interacts between variables that
+could also be affecting the model's performance. 
 
 ## Model Building 
 
-- Should reiterate the metric that will be used to compare models and determine which will be the final/winning model
+As stated in the [Methods](@sec-methods) sections, the primary assessment metric 
+for the analysis will be accuracy, helping to compare models and 
+determine which will be the final/winning model. Accuracy provides a clear 
+measure of the overall correctness of the model's predictions, indicating the 
+proportion of correctly classified instances out of the total number of instances. 
+
 - Include a table of the best performing model results. 
     - With the best on top and the worst on the bottom
 
+When reviewing and comparing the tuning parameters used during this process,
+I feel that it would be 
 - Review and analysis of tuning parameters should happen here
     - Should further tuning be explored?
     - Or should tuning be adjusted when fitting data like this in the future
-    - Good section to describe what the bester parameters were for each model type 
+    - Good section to describe what the best parameters were for each model type 
     - Could put this in an appendix 
 
+Additionally, it is interesting to see that after adding on ____ in the recipes, the 
+performance of the _____ model types increased, whereas the performance of the
+___ model types decreased or performance worse than the baseline model. It would 
+be interesting to go back in the future and create another recipe to see where
+the actual performance limiting element is located within the recipe. 
 - Could include a discussion comparing any systematic differences in performance between model types or recipes 
+
+After removing the following variables in my pre-processing feature engineering 
+recipes, ______, it is interesting to see that the performance of said models 
+did follow or didn't follow my hypothesis and thoughts on how those variables 
+do not affect the response variable much in terms of having predictive importance. 
 - If variations in recipes were used to explore predictive important of certain variables, then it should be discussed here
+
+Overall, as seen in (@table-1), I will be selecting the _____ ______ model as 
+the final model to test, as it has the best performance when being assessed 
+via our main performance metric of accuracy. Additionally, because of the 
+small standard deviation associated with the values, we can conclude that 
+on average, most of the different tuned models stayed around this level
+of accuracy. It was surprising or not surprising that this model won has ____.
 - The section will likely end with the selection of the final/winning model (provide reasoning).
     - Was it surprising or not surprising that this particular model won? Explain.
 
@@ -112,11 +317,12 @@ Introduction to problem(s)/objective(s). Discuss why you are trying to predict t
 
 ## References {#sec-references}
 
-  1. Name [site](site)
+  1. Kaggle Diabetes Health Indicators Dataset [https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_012_health_indicators_BRFSS2015.csv](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_012_health_indicators_BRFSS2015.csv)
 
-  2. Name [site](site)
+  2. CDC Behavioral Risk Factor Surveillance System [https://www.cdc.gov/brfss/index.html](https://www.cdc.gov/brfss/index.html)
 
-  3. Name [site](site) 
+  3. National Library of Medicine - Prediabetes: A high-risk state for developing diabetes 
+  [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3891203/#:~:text=According%20to%20an%20ADA%20expert,prediabetes%20will%20eventually%20develop%20diabetes.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3891203/#:~:text=According%20to%20an%20ADA%20expert,prediabetes%20will%20eventually%20develop%20diabetes.) 
 
 ## Appendix 
 
