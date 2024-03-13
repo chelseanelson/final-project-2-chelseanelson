@@ -100,7 +100,7 @@ later on to take care of its missingness.
 Looking at further explorations of the predictor variables, I will focus on in 
 this section the variables which explored bmi, high blood pressure, 
 cholsterol levels, and the overall general health of the respondent. The 
-rest of the EDA can be observed in [Appendix II: EDA](@sec-EDA). I chose to focus mostly on these 
+rest of the EDA can be observed in [Appendix I: EDA](@sec-EDA). I chose to focus mostly on these 
 variables, as after an extensive EDA, I visualized and discovered that these variables have the 
 strongest relationships between themselves as well as in relationship 
 with our response variable. 
@@ -262,7 +262,7 @@ body mass indexes associated with each distribution increases when the person
 has diabetes versus when they do. 
 
 After looking at these variables as well as others that will be expressed in 
-the [Appendix II: EDA](@sec-EDA), I am really to add on more aspects to 
+the [Appendix I: EDA](@sec-EDA), I am really to add on more aspects to 
 my pre-processing stage for my second versions of my models 
 than what I did previously when working with my kitchen
 sink and baseline models. 
@@ -309,8 +309,12 @@ to see the different results that could be generated wanting to ultimate
 pick the best model possible. In terms of iteration, I used a regular grid 
 for the tuning process of all of the models, thus where all of the combinations 
 of the hyperparameters within the specified ranges will be evaluated exhaustively.
+In terms which parameters to tune and to how much, I based my decisions at least
+for the kitchen sink models on past examples done in class, as well as relying 
+on the originally given ranges as well. 
 
-Naive Bayes : I did not tune any of the parameters for this model as I was 
+(look over and rewrite some parts of this section potentially)
+Naive Bayes: I did not tune any of the parameters for this model as I was 
 using it as my baseline model thus I felt no need to execute or change the 
 given parameters, thus rather just fitting the base values of it to my 
 resamples. 
@@ -319,13 +323,13 @@ Logistic Regression: There were no hyperparameters for this model, thus I
 did not need to tune anything when fitting the kitchen sink version or the feature
 engineering version of the model to my resamples. 
 
-Random Forest : For my kitchen sink random forest model, I decided to tune the 
+Random Forest: For my kitchen sink random forest model, I decided to tune the 
 `trees`, `min_n`, and `mtry` parameters. The `trees` parameter represents the 
 number of trees to be grown in the random forest. For this hyperparameter I 
 decided to look at a range from 100 to 2000, with increments of 6. Thus I will 
 be looking at around 317 different values for this parameter, with a grid size 
 of 6 levels. The `min_n` parameter represents the minimum number of samples 
-required to split a node in the tree. I decided for this variable to go with 
+required to split a node in the tree. I decided for this parameter to go with 
 the range that they already previous associated with this parameter. However,
 I decide to look at the range with increments of 4. Thus I will be looking at 
 around ___ different values for this parameter, with a grid size of 4 levels. 
@@ -339,9 +343,29 @@ parameters. (explain why I did each of these)
 
 Boosted Trees:
 
-$K$-Nearest Neighbors: 
+$K$-Nearest Neighbors: For my kitchen sink $k$-nearest neighbors model, I 
+decided to tune the `neighbors` parameter. The `neighbors` parameter represents 
+____ . For this hyperparameter, I decided to look at the range from 1 to 15, 
+with increments of 5. Thus I will be looking at around 3 different values 
+for this parameter, with a grid size of 5 levels. However for my feature
+engineering $k$-nearest neighbors model, I decided to stick with the original
+range given which is 1 to 10 with increments of 5. 
+Thus I will be looking at around 2 values for this parameter, with a
+grid size of 5 levels. (this doesn't seem right). I chose to make this change 
+because _____. 
 
-Neutral Network: 
+Neutral Network: For my kitchen sink neutral network model, I decided to tune the
+`epochs` and `hidden_units` parameters. The `epochs` parameter represents ____. 
+For this hyperparameter, I decided to stick with the original range given which
+is from 10 to 1000, with increments of 5. Thus I will be looking at around 
+199 different values for this parameter, with a grid size of 5 levels. 
+The `hidden_units` parameter represents ____. I decided for this parameter 
+to also stick with the original range given which is from 1 to 10, with 
+increments of 5. Therefore, I will be looking at around 2 different values for 
+this parameter, with a grid size of 5 levels. For the feature engineering 
+neutral network model, I decided to stick with a similar tuning and resampling
+method, however changing the amount of levels from 5 to 4 to ensure a faster 
+model tuning sequence. 
 
 - Describe any parameters that will be tuned
     - What are the ranges to be used?
@@ -353,10 +377,10 @@ In total, I made 5 different recipes to be used with my models. Three of those
 models are baseline/kitchen sink recipes, whereas the last two have more 
 feature engineering components. 
 
-Looking first at the kitchen sink recipes, 
-I first made one specifically for my baseline Naive Bayes model. Within this 
-recipe, I included _____. I did this because ______. I did not dummy or turn 
-numerical my categorical variables for this recipe, as I will do for the rest,
+Looking first at the kitchen sink recipes, I first made one specifically for 
+my baseline Naive Bayes model. Within this recipe, I included _____. 
+I did this because ______. I did not dummy or turn numerical my categorical 
+variables for this recipe, as I will do for the rest,
 as the Naive Bayes model is able to work around being given straight categorical
 variables, within no need for change. The second kitchen sink recipe that I created
 was for my parametric models, neutral network and logistic regression models. 
@@ -392,40 +416,61 @@ determine which will be the final/winning model. Accuracy provides a clear
 measure of the overall correctness of the model's predictions, indicating the 
 proportion of correctly classified instances out of the total number of instances. 
 
-- Include a table of the best performing model results. 
-    - With the best on top and the worst on the bottom
+**Performance Comparison Table**
+```{r}
+#| label: performance_model 
 
-When reviewing and comparing the tuning parameters used during this process,
-I feel that it would be 
-- Review and analysis of tuning parameters should happen here
-    - Should further tuning be explored?
-    - Or should tuning be adjusted when fitting data like this in the future
-    - Good section to describe what the best parameters were for each model type 
-    - Could put this in an appendix 
+read_rds(here("results/tuned_models/model_accuracy_comparison.rds")) %>% knitr::kable()
+```
 
-Additionally, it is interesting to see that after adding on ____ in the recipes, the 
-performance of the _____ model types increased, whereas the performance of the
-___ model types decreased or performance worse than the baseline model. It would 
+After looking at the best tuned hyperparameters for each of the model types, 
+I think it would be beneficial in the future to examine and try more combinations
+to hopefully find and achieve even better predictions and accuracy metrics. In
+terms of the different model types, I have listed out what were concluded to be
+the best parameters for each.
+
+Neutral Network (kitchen sink): `epochs` = 257 and `hidden_units` = 7
+
+Neutral Network (feature engineering): `epochs` = 1000 and `hidden_units` = 4
+
+$K$-Nearest Neighbors (kitchen sink): `neighbors` = 15
+
+$K$-Nearest Neighbors (feature engineering): `neighbors` = 15
+
+Random Forest (kitchen sink): 
+
+Random Forest (feature engineering):
+
+Boosted Tree (kitchen sink):
+
+Boosted Tree (feature engineering):
+
+Additionally, it is interesting to see that after adding on more steps and 
+features in the recipes, the performance of the logistics model type increased, 
+whereas the performance of the neutral network model type got worse. The 
+$k$-nearest neighbors model type did not really change, although gaining more 
+room for standard error in overall how the tuned resampling models performed. It would 
 be interesting to go back in the future and create another recipe to see where
-the actual performance limiting element is located within the recipe. 
-- Could include a discussion comparing any systematic differences in performance between model types or recipes 
+the actual performance limiting elements are located within the recipe. 
 
-After removing the following variables in my pre-processing feature engineering 
-recipes, ______, it is interesting to see that the performance of said models 
-did follow or didn't follow my hypothesis and thoughts on how those variables 
-do not affect the response variable much in terms of having predictive importance. 
-- If variations in recipes were used to explore predictive important of certain variables, then it should be discussed here
+After removing the variables assessing if someone had healthcare, if they 
+needed to see a doctor, but didn't have money or not, and  if someone had had 
+a cholesterol check in the last five years or not from being predictive variables 
+in my pre-processing feature engineered recipes, it is interesting to 
+see that the performance of said models did not follow my hypothesis and 
+thoughts on how those variables do not affect the response variable much in 
+terms of having predictive importance, as the feature engineered models did not
+see much change in the accuracy of their predictions. 
 
-Overall, as seen in (@table-1), I will be selecting the _____ ______ model as 
-the final model to test, as it has the best performance when being assessed 
-via our main performance metric of accuracy. Additionally, because of the 
-small standard deviation associated with the values, we can conclude that 
-on average, most of the different tuned models stayed around this level
-of accuracy. It was surprising or not surprising that this model won has ____.
-- The section will likely end with the selection of the final/winning model (provide reasoning).
-    - Was it surprising or not surprising that this particular model won? Explain.
+Overall, as seen in the above performance comparison table, I will be 
+selecting the _____ ______ model as the final model to test as it has the 
+best performance when being assessed via our main performance metric of 
+accuracy. Additionally, because of the small standard deviation associated 
+with the values, we can conclude that on average, most of the different tuned 
+models stayed around this level of accuracy. It was surprising or not 
+surprising that this model won has ____. 
 
-### Final Model Analysis
+## Final Model Analysis
 
 - Where you fit your final/winning model to the full training and then testing data
 - Assess the final model’s performance with at least the metric used to determine the winning model, could also use other metrics as well 
@@ -449,9 +494,7 @@ of accuracy. It was surprising or not surprising that this model won has ____.
 
 ## Appendix 
 
-### Appendix I: Technical Info {#sec-technical_info}
+### Appendix I: EDA {#sec-EDA}
 
-### Appendix II: EDA {#sec-EDA}
-
-### Appendix III: Extras {#sec-extras}
+### Appendix II: Extras {#sec-extras}
 

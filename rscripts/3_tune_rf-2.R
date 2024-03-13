@@ -28,7 +28,7 @@ rf_model <-
     mode = "classification",
     trees = 1000, 
     min_n = tune(),
-    mtry = tune() #figure out what I want to tune or not 
+    mtry = tune()
   ) |> 
   set_engine("ranger")
 
@@ -45,15 +45,14 @@ hardhat::extract_parameter_set_dials(rf_model)
 
 # change hyperparameter ranges
 rf_params <- extract_parameter_set_dials(rf_model) %>% 
-  update(mtry = mtry(range = c(1, 7)),
-         trees = trees(range = c(100, 2000))) # figure out what I want here, change trees maybe
+  update(mtry = mtry(range = c(1, 6)))
 
 # build tuning grid
-rf_grid <- grid_regular(rf_params, levels = c(mtry = 6, trees = 6, min_n = 4))
+rf_grid <- grid_regular(rf_params, levels = c(mtry = 6, min_n = 4))
 
 # fit workflows/models ----
 # set seed
-set.seed(123567)
+set.seed(12356790)
 
 rf_tuned_2 <- 
   rf_wflow |> 

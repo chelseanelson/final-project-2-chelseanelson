@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Chelsea Nelson">
-<meta name="dcterms.date" content="2024-03-12">
+<meta name="dcterms.date" content="2024-03-13">
 
 <title>Diabetes Classifications Models</title>
 <style>
@@ -3110,17 +3110,14 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
   <li><a href="#bivariate-analysis" id="toc-bivariate-analysis" class="nav-link" data-scroll-target="#bivariate-analysis">Bivariate Analysis</a></li>
   </ul></li>
   <li><a href="#sec-methods" id="toc-sec-methods" class="nav-link" data-scroll-target="#sec-methods">Methods</a></li>
-  <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">Model Building</a>
-  <ul class="collapse">
+  <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">Model Building</a></li>
   <li><a href="#final-model-analysis" id="toc-final-model-analysis" class="nav-link" data-scroll-target="#final-model-analysis">Final Model Analysis</a></li>
-  </ul></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   <li><a href="#sec-references" id="toc-sec-references" class="nav-link" data-scroll-target="#sec-references">References</a></li>
   <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix</a>
   <ul class="collapse">
-  <li><a href="#sec-technical_info" id="toc-sec-technical_info" class="nav-link" data-scroll-target="#sec-technical_info">Appendix I: Technical Info</a></li>
-  <li><a href="#sec-EDA" id="toc-sec-EDA" class="nav-link" data-scroll-target="#sec-EDA">Appendix II: EDA</a></li>
-  <li><a href="#sec-extras" id="toc-sec-extras" class="nav-link" data-scroll-target="#sec-extras">Appendix III: Extras</a></li>
+  <li><a href="#sec-EDA" id="toc-sec-EDA" class="nav-link" data-scroll-target="#sec-EDA">Appendix I: EDA</a></li>
+  <li><a href="#sec-extras" id="toc-sec-extras" class="nav-link" data-scroll-target="#sec-extras">Appendix II: Extras</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -3148,7 +3145,7 @@ Data Science 2 with R (STAT 301-2)</p><p></p>
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 12, 2024</p>
+      <p class="date">March 13, 2024</p>
     </div>
   </div>
   
@@ -3196,7 +3193,7 @@ Github Repo Link
 </div>
 <p>I have visually showcased these changes through <a href="#fig-2">Figure 2</a>. We can now see that the two levels are balanced with each consisting of 39977 instances.</p>
 <p>Additionally, it is important to point out that there are no instances of missing data within my dataset, thus I will not have to impute any variables later on to take care of its missingness.</p>
-<p>Looking at further explorations of the predictor variables, I will focus on in this section the variables which explored bmi, high blood pressure, cholsterol levels, and the overall general health of the respondent. The rest of the EDA can be observed in <a href="@sec-EDA">Appendix II: EDA</a>. I chose to focus mostly on these variables, as after an extensive EDA, I visualized and discovered that these variables have the strongest relationships between themselves as well as in relationship with our response variable.</p>
+<p>Looking at further explorations of the predictor variables, I will focus on in this section the variables which explored bmi, high blood pressure, cholsterol levels, and the overall general health of the respondent. The rest of the EDA can be observed in <a href="@sec-EDA">Appendix I: EDA</a>. I chose to focus mostly on these variables, as after an extensive EDA, I visualized and discovered that these variables have the strongest relationships between themselves as well as in relationship with our response variable.</p>
 <section id="univariate-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="univariate-analysis">Univariate Analysis</h3>
 <p>First I will discuss the univariate distributions of each of the stated above variables of interest.</p>
@@ -3309,7 +3306,7 @@ Github Repo Link
 </figure>
 </div>
 <p>Lastly from <a href="#fig-17">Figure 17</a>, we are able to look at the relationship between body mass index and diabetes diagnosis. There seems to be slightly strong relationship between the two of them, as we see that the median and two quartiles body mass indexes associated with each distribution increases when the person has diabetes versus when they do.</p>
-<p>After looking at these variables as well as others that will be expressed in the <a href="@sec-EDA">Appendix II: EDA</a>, I am really to add on more aspects to my pre-processing stage for my second versions of my models than what I did previously when working with my kitchen sink and baseline models.</p>
+<p>After looking at these variables as well as others that will be expressed in the <a href="@sec-EDA">Appendix I: EDA</a>, I am really to add on more aspects to my pre-processing stage for my second versions of my models than what I did previously when working with my kitchen sink and baseline models.</p>
 </section>
 </section>
 <section id="sec-methods" class="level2">
@@ -3318,13 +3315,13 @@ Github Repo Link
 <p>After my initial split, I decided to conduct a cross-validation resampling technique employing 10 folds with 5 repeats to robustly estimate the models’ performance and account for potential variability in the data. By repeating the cross-validation process 5 times, I am able to obtain more reliable estimates of model performance. Additionally, with 10-fold cross-validation, the training data is divided into 10 roughly equal-sized folds. Each fold serves as both a training and testing set, allowing me to utilize a larger portion of the data for training and testing purposes. This maximizes the use of available data and provides more accurate estimates of model performance. Each model type will be fitted 50 times, allowing for good predictions to be made in terms of finding the best hyperparameters for my final model.</p>
 <p>Additionally, as stated above it is important acknowledge that I will be conducting a binary classification prediction problem, with the primary assessment metric for the analysis will be accuracy. Accuracy provides a clear measure of the overall correctness of the model’s predictions, indicating the proportion of correctly classified instances out of the total number of instances.</p>
 <p>In terms of the model types that I will be fitting, I have selected to use the Naive Bayes, Logistic Regression, Random Forest, Boosted Tree, <span class="math inline">\(k\)</span>-Nearest Neighbors, and a Single-Layer Neural Network models for my model analysis. I have decided to use these models as they all provide me with an arrangement of models from baseline to highly advanced models to see what factors play into discovering diabetes diagnosis in the best manner.</p>
-<p>For each model type, I have taken to tuning different parameters in order to see the different results that could be generated wanting to ultimate pick the best model possible. In terms of iteration, I used a regular grid for the tuning process of all of the models, thus where all of the combinations of the hyperparameters within the specified ranges will be evaluated exhaustively.</p>
-<p>Naive Bayes : I did not tune any of the parameters for this model as I was using it as my baseline model thus I felt no need to execute or change the given parameters, thus rather just fitting the base values of it to my resamples.</p>
+<p>For each model type, I have taken to tuning different parameters in order to see the different results that could be generated wanting to ultimate pick the best model possible. In terms of iteration, I used a regular grid for the tuning process of all of the models, thus where all of the combinations of the hyperparameters within the specified ranges will be evaluated exhaustively. In terms which parameters to tune and to how much, I based my decisions at least for the kitchen sink models on past examples done in class, as well as relying on the originally given ranges as well.</p>
+<p>(look over and rewrite some parts of this section potentially) Naive Bayes: I did not tune any of the parameters for this model as I was using it as my baseline model thus I felt no need to execute or change the given parameters, thus rather just fitting the base values of it to my resamples.</p>
 <p>Logistic Regression: There were no hyperparameters for this model, thus I did not need to tune anything when fitting the kitchen sink version or the feature engineering version of the model to my resamples.</p>
-<p>Random Forest : For my kitchen sink random forest model, I decided to tune the <code>trees</code>, <code>min_n</code>, and <code>mtry</code> parameters. The <code>trees</code> parameter represents the number of trees to be grown in the random forest. For this hyperparameter I decided to look at a range from 100 to 2000, with increments of 6. Thus I will be looking at around 317 different values for this parameter, with a grid size of 6 levels. The <code>min_n</code> parameter represents the minimum number of samples required to split a node in the tree. I decided for this variable to go with the range that they already previous associated with this parameter. However, I decide to look at the range with increments of 4. Thus I will be looking at around ___ different values for this parameter, with a grid size of 4 levels. Lastly, I decided to tune the <code>mtry</code> parameters which represents the number of variables randomly sampled as candidates at each split. I decided to look at a range from 1 to 7, with increments of 1. Thus I will be looking at 7 different values, with a grid size of 1 level. However for my feature engineering random forest model, I decided to base what I tune on how well my kitchen sink random forest model performed beforehand. Thus for this model, I tuned the ____ parameters. (explain why I did each of these)</p>
+<p>Random Forest: For my kitchen sink random forest model, I decided to tune the <code>trees</code>, <code>min_n</code>, and <code>mtry</code> parameters. The <code>trees</code> parameter represents the number of trees to be grown in the random forest. For this hyperparameter I decided to look at a range from 100 to 2000, with increments of 6. Thus I will be looking at around 317 different values for this parameter, with a grid size of 6 levels. The <code>min_n</code> parameter represents the minimum number of samples required to split a node in the tree. I decided for this parameter to go with the range that they already previous associated with this parameter. However, I decide to look at the range with increments of 4. Thus I will be looking at around ___ different values for this parameter, with a grid size of 4 levels. Lastly, I decided to tune the <code>mtry</code> parameters which represents the number of variables randomly sampled as candidates at each split. I decided to look at a range from 1 to 7, with increments of 1. Thus I will be looking at 7 different values, with a grid size of 1 level. However for my feature engineering random forest model, I decided to base what I tune on how well my kitchen sink random forest model performed beforehand. Thus for this model, I tuned the ____ parameters. (explain why I did each of these)</p>
 <p>Boosted Trees:</p>
-<p><span class="math inline">\(K\)</span>-Nearest Neighbors:</p>
-<p>Neutral Network:</p>
+<p><span class="math inline">\(K\)</span>-Nearest Neighbors: For my kitchen sink <span class="math inline">\(k\)</span>-nearest neighbors model, I decided to tune the <code>neighbors</code> parameter. The <code>neighbors</code> parameter represents ____ . For this hyperparameter, I decided to look at the range from 1 to 15, with increments of 5. Thus I will be looking at around 3 different values for this parameter, with a grid size of 5 levels. However for my feature engineering <span class="math inline">\(k\)</span>-nearest neighbors model, I decided to stick with the original range given which is 1 to 10 with increments of 5. Thus I will be looking at around 2 values for this parameter, with a grid size of 5 levels. (this doesn’t seem right). I chose to make this change because _____.</p>
+<p>Neutral Network: For my kitchen sink neutral network model, I decided to tune the <code>epochs</code> and <code>hidden_units</code> parameters. The <code>epochs</code> parameter represents ____. For this hyperparameter, I decided to stick with the original range given which is from 10 to 1000, with increments of 5. Thus I will be looking at around 199 different values for this parameter, with a grid size of 5 levels. The <code>hidden_units</code> parameter represents ____. I decided for this parameter to also stick with the original range given which is from 1 to 10, with increments of 5. Therefore, I will be looking at around 2 different values for this parameter, with a grid size of 5 levels. For the feature engineering neutral network model, I decided to stick with a similar tuning and resampling method, however changing the amount of levels from 5 to 4 to ensure a faster model tuning sequence.</p>
 <ul>
 <li>Describe any parameters that will be tuned
 <ul>
@@ -3341,18 +3338,88 @@ Github Repo Link
 <section id="model-building" class="level2">
 <h2 class="anchored" data-anchor-id="model-building">Model Building</h2>
 <p>As stated in the <a href="@sec-methods">Methods</a> sections, the primary assessment metric for the analysis will be accuracy, helping to compare models and determine which will be the final/winning model. Accuracy provides a clear measure of the overall correctness of the model’s predictions, indicating the proportion of correctly classified instances out of the total number of instances.</p>
-<ul>
-<li>Include a table of the best performing model results.
-<ul>
-<li>With the best on top and the worst on the bottom</li>
-</ul></li>
-</ul>
-<p>When reviewing and comparing the tuning parameters used during this process, I feel that it would be - Review and analysis of tuning parameters should happen here - Should further tuning be explored? - Or should tuning be adjusted when fitting data like this in the future - Good section to describe what the best parameters were for each model type - Could put this in an appendix</p>
-<p>Additionally, it is interesting to see that after adding on ____ in the recipes, the performance of the _____ model types increased, whereas the performance of the ___ model types decreased or performance worse than the baseline model. It would be interesting to go back in the future and create another recipe to see where the actual performance limiting element is located within the recipe. - Could include a discussion comparing any systematic differences in performance between model types or recipes</p>
-<p>After removing the following variables in my pre-processing feature engineering recipes, ______, it is interesting to see that the performance of said models did follow or didn’t follow my hypothesis and thoughts on how those variables do not affect the response variable much in terms of having predictive importance. - If variations in recipes were used to explore predictive important of certain variables, then it should be discussed here</p>
-<p>Overall, as seen in (<span class="citation" data-cites="table-1">@table-1</span>), I will be selecting the _____ ______ model as the final model to test, as it has the best performance when being assessed via our main performance metric of accuracy. Additionally, because of the small standard deviation associated with the values, we can conclude that on average, most of the different tuned models stayed around this level of accuracy. It was surprising or not surprising that this model won has ____. - The section will likely end with the selection of the final/winning model (provide reasoning). - Was it surprising or not surprising that this particular model won? Explain.</p>
-<section id="final-model-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="final-model-analysis">Final Model Analysis</h3>
+<p><strong>Performance Comparison Table</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">wflow_id</th>
+<th style="text-align: left;">metric</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">std_err</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">nnet_1</td>
+<td style="text-align: left;">accuracy</td>
+<td style="text-align: right;">0.7463745</td>
+<td style="text-align: right;">0.0008232</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nnet_2</td>
+<td style="text-align: left;">accuracy</td>
+<td style="text-align: right;">0.7446802</td>
+<td style="text-align: right;">0.0007566</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">logistic_2</td>
+<td style="text-align: left;">accuracy</td>
+<td style="text-align: right;">0.7446001</td>
+<td style="text-align: right;">0.0007885</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">logisitic_1</td>
+<td style="text-align: left;">accuracy</td>
+<td style="text-align: right;">0.7431692</td>
+<td style="text-align: right;">0.0008041</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">knn_1</td>
+<td style="text-align: left;">accuracy</td>
+<td style="text-align: right;">0.7134113</td>
+<td style="text-align: right;">0.0005594</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">knn_2</td>
+<td style="text-align: left;">accuracy</td>
+<td style="text-align: right;">0.7126942</td>
+<td style="text-align: right;">0.0006116</td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nbayes</td>
+<td style="text-align: left;">accuracy</td>
+<td style="text-align: right;">0.6837969</td>
+<td style="text-align: right;">0.0006291</td>
+<td style="text-align: right;">50</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>After looking at the best tuned hyperparameters for each of the model types, I think it would be beneficial in the future to examine and try more combinations to hopefully find and achieve even better predictions and accuracy metrics. In terms of the different model types, I have listed out what were concluded to be the best parameters for each.</p>
+<p>Neutral Network (kitchen sink): <code>epochs</code> = 257 and <code>hidden_units</code> = 7</p>
+<p>Neutral Network (feature engineering): <code>epochs</code> = 1000 and <code>hidden_units</code> = 4</p>
+<p><span class="math inline">\(K\)</span>-Nearest Neighbors (kitchen sink): <code>neighbors</code> = 15</p>
+<p><span class="math inline">\(K\)</span>-Nearest Neighbors (feature engineering): <code>neighbors</code> = 15</p>
+<p>Random Forest (kitchen sink):</p>
+<p>Random Forest (feature engineering):</p>
+<p>Boosted Tree (kitchen sink):</p>
+<p>Boosted Tree (feature engineering):</p>
+<p>Additionally, it is interesting to see that after adding on more steps and features in the recipes, the performance of the logistics model type increased, whereas the performance of the neutral network model type got worse. The <span class="math inline">\(k\)</span>-nearest neighbors model type did not really change, although gaining more room for standard error in overall how the tuned resampling models performed. It would be interesting to go back in the future and create another recipe to see where the actual performance limiting elements are located within the recipe.</p>
+<p>After removing the variables assessing if someone had healthcare, if they needed to see a doctor, but didn’t have money or not, and if someone had had a cholesterol check in the last five years or not from being predictive variables in my pre-processing feature engineered recipes, it is interesting to see that the performance of said models did not follow my hypothesis and thoughts on how those variables do not affect the response variable much in terms of having predictive importance, as the feature engineered models did not see much change in the accuracy of their predictions.</p>
+<p>Overall, as seen in the above performance comparison table, I will be selecting the _____ ______ model as the final model to test as it has the best performance when being assessed via our main performance metric of accuracy. Additionally, because of the small standard deviation associated with the values, we can conclude that on average, most of the different tuned models stayed around this level of accuracy. It was surprising or not surprising that this model won has ____.</p>
+</section>
+<section id="final-model-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="final-model-analysis">Final Model Analysis</h2>
 <ul>
 <li>Where you fit your final/winning model to the full training and then testing data</li>
 <li>Assess the final model’s performance with at least the metric used to determine the winning model, could also use other metrics as well</li>
@@ -3360,7 +3427,6 @@ Github Repo Link
 <li>Is the model any good? IT might be the best of the models you tried, but does the effort of building a predictive model really pay off – is it that much better than a baseline/null model?</li>
 <li>Were there any features of the model you selected that make it the best (e.g. fits nonlinearity well)?</li>
 </ul>
-</section>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
@@ -3379,14 +3445,11 @@ Github Repo Link
 </section>
 <section id="appendix" class="level2">
 <h2 class="anchored" data-anchor-id="appendix">Appendix</h2>
-<section id="sec-technical_info" class="level3">
-<h3 class="anchored" data-anchor-id="sec-technical_info">Appendix I: Technical Info</h3>
-</section>
 <section id="sec-EDA" class="level3">
-<h3 class="anchored" data-anchor-id="sec-EDA">Appendix II: EDA</h3>
+<h3 class="anchored" data-anchor-id="sec-EDA">Appendix I: EDA</h3>
 </section>
 <section id="sec-extras" class="level3">
-<h3 class="anchored" data-anchor-id="sec-extras">Appendix III: Extras</h3>
+<h3 class="anchored" data-anchor-id="sec-extras">Appendix II: Extras</h3>
 </section>
 </section>
 

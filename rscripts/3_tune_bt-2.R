@@ -45,14 +45,13 @@ hardhat::extract_parameter_set_dials(bt_model)
 
 # change hyperparameter ranges
 bt_params <- extract_parameter_set_dials(bt_model) %>% 
-  update(mtry = mtry(c(1, 7)),
-         learn_rate = learn_rate(range = c(-5, -0.2)),
-         trees = trees(range = c(100, 2000)))
+  update(mtry = mtry(c(1, 6)),
+         learn_rate = learn_rate(range = c(-5, -0.2)))
 
 # build tuning grid
 bt_grid <- grid_regular(bt_params, 
-                        levels = c(mtry = 6, learn_rate = 10, 
-                                   min_n = 4, trees = 6))
+                        levels = c(mtry = 6, learn_rate = 5, 
+                                   min_n = 4))
 
 # do learn_rate on a log10 scale for feature engineering 
 
