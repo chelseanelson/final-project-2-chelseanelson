@@ -1,6 +1,7 @@
 # Final Project Repository
 
-Welcome to my final project repository! This project focuses 
+Welcome to my final project repository! This project focuses on addressing the 
+prediction problem of
 
 ## Project Structure
 

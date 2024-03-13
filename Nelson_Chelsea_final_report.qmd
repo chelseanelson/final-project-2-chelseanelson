@@ -57,7 +57,7 @@ multiple aspects of life through these telephone surveys, I will specifically
 being looking at the Diabetes Health Indicators Dataset which contains
 statistics and lifestyle survey information about people in general
 along with their diagnosis of diabetes. More information related to this dataset
-can be found in [References](@sec-references) section, with both the official CDC website as
+can be found in the [References](@sec-references) section, with both the official CDC website as
 well as the Kaggle page which I collected the data from.
 
 ## Data Overview & Quality 
@@ -72,13 +72,13 @@ could potentially receive: no diabetes, prediabetes, or diabetes.
 In order to take care of this class imbalance however, I made an update to the 
 dataset. I created my own random 50-50 split from the original larger dataset. 
 Within this 50-50 split, I also changed my response variable from including three 
-levels of classifications to only having 2, diabetes or no diabetes. 
-Within this change, I combined the `pre-diabetes` and `diabetes` levels into 
+levels of classifications to only having two, diabetes or no diabetes. 
+Within this change, I combined the pre-diabetes and diabetes levels into 
 one representing now having or close to having diabetes, thus then
-randomly downsampling the larger `no diabetes` level. I decide to combine the levels 
+randomly downsampling the larger no diabetes level. I decide to combine the levels 
 in this manner as according to an ADA expert panel, up to 70% of individuals 
-with prediabetes will eventually develop diabetes, more information on this can 
-be located in the [References](@sec-references). 
+with prediabetes will eventually develop diabetes, more information supporting 
+this claim is located in the [References](@sec-references) section. 
 
 After making these necessary changes, the response variable no longer has severe
 class imbalance thus being able to have my model make better predictions, 
@@ -89,7 +89,6 @@ that could have arisen, allowing for me to be able to generalize the model's
 predictions better. 
 
 ![Univariate Analysis - Diabetes Diagnosis (Updated Version)](figures/figure-3.png){#fig-2}
-(add the actual numbers on top of each bar)
 
 I have visually showcased these changes through @fig-2. We can now see that 
 the two levels are balanced with each consisting of 39977 instances. 
@@ -100,29 +99,58 @@ later on to take care of its missingness.
 
 Looking at further explorations of the predictor variables, I will focus on in 
 this section the variables which explored bmi, high blood pressure, 
-cholsterol levels, and the overall general health of the patient, however the 
+cholsterol levels, and the overall general health of the respondent. The 
 rest of the EDA can be observed in [Appendix II: EDA](@sec-EDA). I chose to focus mostly on these 
-variables, as after an extensive EDA, I saw that these variables had the 
-strongest relationships between each other as well as in relationship 
+variables, as after an extensive EDA, I visualized and discovered that these variables have the 
+strongest relationships between themselves as well as in relationship 
 with our response variable. 
 
 ### Univariate Analysis
 
 First I will discuss the univariate distributions of each of the stated above
-variables of interest. (write more here maybe)
+variables of interest. 
 
-Plot 1
-Words about it (speak about how I plan to take care of the skewness by 
-logging this variable as well as the other numeric variables)
+![BMI - Univariate Distribution](figures/univariate-EDA/numerical_univariate_1.png){#fig-3}
 
-Plot 2 
-Words about it 
+In @fig-3, we see that the distribution of the respondents's body mass index 
+(bmi) is extremely left skewed. In order to take care of this skewness in the
+actual building of my models, I decided to perform a log10 transformation on 
+this predictor variable during the making of the pre-processing 
+feature engineering recipe. 
 
-Plot 3
-Words about it 
+![BMI - Univariate Distribution (log10)](figures/univariate-EDA/numerical_univariate_7.png){#fig-4}
 
-Plot 4 
-Words about it 
+@fig-4 showcases the bmi distribution of our respondents again, however now with the 
+log10 transformation done to it. From this, we now see that the distribution is
+more symmetric having little to no skewedness to it as well as no outliers. Thus
+this confirms that by applying a log10 transformation on this variable during my 
+pre-processing stage, I will hopefully be able to gain more diverse and 
+substantial predictions.
+
+![General Health - Univariate Distribution](figures/univariate-EDA/categorical_univariate_10.png){#fig-5}
+
+Within our visualization of the general health responses (@fig-5), we see that there 
+a lot of class imbalance. This is something that we will have to keep in 
+mind as we go on to building the models, wanting to ensure that we recognize the
+existence of this as we look at the performance metrics associated with each of
+our model types. 
+
+![Blood Pressure - Univariate Distribution](figures/univariate-EDA/categorical_univariate_12.png){#fig-6}
+
+@fig-6 showcases that there is an almost equal balance between our two levels 
+within the blood pressure variable. Thus meaning that our respondents are almost
+equal in the amounts that have or don't have high blood pressure. This lack
+of class imbalance is extremely good as it helps reduce biases in the predictions
+that could be made by our models. 
+
+![Cholosterol - Univariate Distribution](figures/univariate-EDA/categorical_univariate_13.png){#fig-7}
+
+Similar to @fig-6, in @fig-7 we see that there is an almost equal balance 
+between our two levels within the cholesterol variable. Thus meaning that 
+from our respondents there is an almost equal divide of people who have and 
+don't have high cholesterol. As stated above, this lack of severe class imbalance
+will help in reducing any biases that could be obtained from our predictive 
+variables when creating predictions from our models. 
 
 ### Bivariate Analysis
 
@@ -130,19 +158,114 @@ Turning towards looking more at the relationship between each of these
 variables, overall we see that these variables are extremely related to each other,
 as well as with our response variable, diabetes diagnosis. 
 
-PLot 1 
+![Blood Pressure by Cholostreol - Bivariate Distribution](figures/bivariate-EDA/bivariate-1.png){#fig-8}
 
-Plot 2
+Looking at @fig-8, there seems to be an extremely strong relationship between these 
+blood pressure and cholesterol, as we see that having no high blood pressure is 
+extremely more common when a respondent also does not have high cholesterol, 
+and then when a respondent does have high blood pressure they are more 
+likely to then also have high cholesterol. Seeing the strength and commonalities
+within this relationship, I plan to include this relationship and look more at 
+the interactions between these two variables within my pre-processing stage 
+for building my feature engineered recipes. 
 
-Plot 3
+![BMI by Blood Pressure - Bivariate Distribution](figures/bivariate-EDA/bivariate-3.png){#fig-9}
 
-Plot 4
+When looking at the relationships displayed in @fig-9, I find it interesting that 
+the overall distribution of the respondents' bmi when they don't have high blood pressure
+compared to when they do is extremely similar. The only different between these
+distributions lies when looking at the median, and 25th and 75th quartiles. Through 
+this we see that the average bmi for people who do have high blood pressure 
+is higher than that of people without high blood pressure. It will be interesting to 
+see how this relationship plays a part in the predictions created by my models. 
 
-Plot 5
+![BMI by Cholesterol - Bivariate Distribution](figures/bivariate-EDA/bivariate-4.png){#fig-10}
 
-PLot 6
+Similar to @fig-9, it is interesting to see in @fig-10 that the overall 
+distribution of the respondents' bmi when they don't have high cholesterol compared
+to when they do is extremely similar. The only difference again can be witnessed
+when looking aat the median, and 25th and 75th quartiles of the distributions. 
+Thus form this information, we see that the average bmi for people who do have 
+high cholesterol is higher than that of people without high cholesterol. The
+degree of this relationship will also play an interesting role in the predictions
+that are created by my models. 
 
-Plot 7
+![General Health by High Cholesterol - Bivariate Distribution](figures/bivariate-EDA/bivariate-5.png){#fig-11}
+
+@Fig-11 expresses the relationship between the degree of general health that 
+respondents felt they have and if they have high cholesterol or not. From this 
+relationship we can highlight that as the degree of general health get worse,
+we see that the amount of respondents who say that they also have high cholesterol
+increases as well. thus showcasing that they are connected in some manner. 
+Although I do not do further exploration of this relationship within my 
+pre-processing stage, I think this would be an interesting relationship to look
+more into their interact given the opportunity again. 
+
+
+![General Health by Blood Pressure - Bivariate Distribution](figures/bivariate-EDA/bivariate-6.png){#fig-12}
+
+Similar to the strong relationship exhibited in @fig-11, @fig-12 also express
+a strong relationship between the degree of general health that respondents 
+felt they have and if they have high blood pressure or not. From this relationship 
+we can highlight that as the degree of general health get worse,
+we see that the amount of respondents who say that they also have high blood
+pressure increases as well. thus showcasing that they are connected in a 
+negative manner. Although I do not do further exploration of this relationship within my 
+pre-processing stage, I think this would be an interesting relationship to look
+more into their interact given the opportunity again. 
+
+![BMI by General Health - Bivariate Distribution](figures/bivariate-EDA/bivariate-7.png){#fig-13}
+
+@fig-13 showcases that they are not completely correlated however we do see 
+through the plot that as the general health assessment score get lower, 
+the median rises in terms of BMI. However most of the overall
+distributions look the same for each general health assessment, being left
+skewed with a few outliers.  
+
+![Blood Pressure by Diabetes - Bivariate Distribution](figures/bivariate-EDA/bivariate-10.png){#fig-14}
+
+From @fig-14, we can see that blood pressure is extremely connected with 
+diabetes diagnosis, as we see the trends of where someone does not have high
+blood pressure, they also do not have diabetes, whereas if someone does have
+high blood pressure, they tend to have diabetes versus not. Because of how 
+correlated this relationship seems I will take precautions of this when
+doing my pre-processing work, such that it will help mitigate the power of this 
+variable in the predictive model, both in terms of its relationship to the 
+response variable but other predictor variables as well. 
+
+![Cholesterol by Diabetes - Bivariate Distribution](figures/bivariate-EDA/bivariate-11.png){#fig-15}
+
+The visualization of @fig-15 showcases to us the strong relationship that is 
+present between cholesterol levels and diabetes diagnosis. Similar to the 
+relationship showcased in @fig-14, we see the trend of not having high 
+cholesterol being associated with not having diabetes, while having high
+cholesterol is more associated with having diabetes. Thus, I will also work
+to mitigate this relationship as well as high correlations present with other
+predictor variables. 
+
+![General Health by Diabetes - Bivariate Distribution](figures/bivariate-EDA/bivariate-12.png){#fig-16}
+
+@fig-16 highlights the strong relationship that seems to be present between
+respondents' general health assessment score and their diabetes diagnosis. 
+We see that as the assessment scores get worse, people are more and more 
+likely to have diabetes than not. As with the blood pressure and cholesterol 
+variables, I will have to work around this strong relationship within my 
+pre-processing stage, in order to mitigate any additional biases it could 
+create for my predictions.
+
+![BMI by Diabetes - Bivariate Distribution](figures/bivariate-EDA/bivariate-13.png){#fig-17}
+
+Lastly from @fig-17, we are able to look at the relationship between body
+mass index and diabetes diagnosis. There seems to be slightly strong 
+relationship between the two of them, as we see that the median and two quartiles 
+body mass indexes associated with each distribution increases when the person
+has diabetes versus when they do. 
+
+After looking at these variables as well as others that will be expressed in 
+the [Appendix II: EDA](@sec-EDA), I am really to add on more aspects to 
+my pre-processing stage for my second versions of my models 
+than what I did previously when working with my kitchen
+sink and baseline models. 
 
 ## Methods {#sec-methods}
 

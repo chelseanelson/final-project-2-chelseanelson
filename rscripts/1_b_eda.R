@@ -150,26 +150,27 @@ categorical_univariate_14 <- diabetes_eda_data %>% univariate_discrete(smoker) +
 categorical_univariate_15 <- diabetes_eda_data %>% univariate_discrete(sex)
 # low class imbalance 
 
-ggsave("figures/univariate-EDA/categorical_univariate_1.png", categorical_univariate_1)
-ggsave("figures/univariate-EDA/categorical_univariate_2.png", categorical_univariate_2)
-ggsave("figures/univariate-EDA/categorical_univariate_3.png", categorical_univariate_3)
-ggsave("figures/univariate-EDA/categorical_univariate_4.png", categorical_univariate_4)
-ggsave("figures/univariate-EDA/categorical_univariate_5.png", categorical_univariate_5)
-ggsave("figures/univariate-EDA/categorical_univariate_6.png", categorical_univariate_6)
-ggsave("figures/univariate-EDA/categorical_univariate_7.png", categorical_univariate_7)
-ggsave("figures/univariate-EDA/categorical_univariate_8.png", categorical_univariate_8)
-ggsave("figures/univariate-EDA/categorical_univariate_9.png", categorical_univariate_9)
-ggsave("figures/univariate-EDA/categorical_univariate_10.png", categorical_univariate_10)
-ggsave("figures/univariate-EDA/categorical_univariate_11.png", categorical_univariate_11)
-ggsave("figures/univariate-EDA/categorical_univariate_12.png", categorical_univariate_12)
-ggsave("figures/univariate-EDA/categorical_univariate_13.png", categorical_univariate_13)
-ggsave("figures/univariate-EDA/categorical_univariate_14.png", categorical_univariate_14)
-ggsave("figures/univariate-EDA/categorical_univariate_15.png", categorical_univariate_15)
+# writing out the plots
+ggsave(here("figures/univariate-EDA/categorical_univariate_1.png"), categorical_univariate_1)
+ggsave(here("figures/univariate-EDA/categorical_univariate_2.png"), categorical_univariate_2)
+ggsave(here("figures/univariate-EDA/categorical_univariate_3.png"), categorical_univariate_3)
+ggsave(here("figures/univariate-EDA/categorical_univariate_4.png"), categorical_univariate_4)
+ggsave(here("figures/univariate-EDA/categorical_univariate_5.png"), categorical_univariate_5)
+ggsave(here("figures/univariate-EDA/categorical_univariate_6.png"), categorical_univariate_6)
+ggsave(here("figures/univariate-EDA/categorical_univariate_7.png"), categorical_univariate_7)
+ggsave(here("figures/univariate-EDA/categorical_univariate_8.png"), categorical_univariate_8)
+ggsave(here("figures/univariate-EDA/categorical_univariate_9.png"), categorical_univariate_9)
+ggsave(here("figures/univariate-EDA/categorical_univariate_10.png"), categorical_univariate_10)
+ggsave(here("figures/univariate-EDA/categorical_univariate_11.png"), categorical_univariate_11)
+ggsave(here("figures/univariate-EDA/categorical_univariate_12.png"), categorical_univariate_12)
+ggsave(here("figures/univariate-EDA/categorical_univariate_13.png"), categorical_univariate_13)
+ggsave(here("figures/univariate-EDA/categorical_univariate_14.png"), categorical_univariate_14)
+ggsave(here("figures/univariate-EDA/categorical_univariate_15.png"), categorical_univariate_15)
 
 # bivariate analysis ----
 
 # BP and Chol
-diabetes_eda_data %>% 
+bivariate_1 <- diabetes_eda_data %>% 
   ggplot(aes(x = high_bp, fill = high_chol)) +
   geom_bar(position = "dodge", color = "black") +
   labs(title = "Blood Pressure by Cholsterol Levels") +
@@ -179,26 +180,31 @@ diabetes_eda_data %>%
                                  "1" = "high cholesterol")) + 
   theme_minimal()
 
+ggsave(here("figures/bivariate-EDA/bivariate-1.png"), bivariate_1)
+
 # These are seem very correlated to each other, might be good to look at the
 # interactions between them later on 
 
 # Veggies and Fruits 
-diabetes_eda_data %>% 
+bivariate_2 <- diabetes_eda_data %>% 
   ggplot(aes(x = veggies, fill = fruits)) +
   geom_bar(position = "dodge", color = "black") +
-  labs(title = "Blood Pressure by Cholsterol Levels") +
+  labs(title = "Fruits by Veggies") +
   scale_fill_discrete(labels = c("0" = "don't consume fruit 1 or more times per day", 
                               "1" = "consumes fruit 1 or more times per day")) +
   scale_x_discrete(labels = c("0" = "don't consume veggies 1 or more times per day", 
                                  "1" = "consumes veggies 1 or more times per day")) + 
   theme_minimal()
 
+
+ggsave(here("figures/bivariate-EDA/bivariate-2.png"), bivariate_2)
+
 # These seem to have a somewhat strong relationship between them
 
 # want to look at BMI, Chol, BP relationships 
 
 # BMI and Blood Pressure
-diabetes_eda_data %>%
+bivariate_3 <- diabetes_eda_data %>%
   ggplot(aes(bmi, high_bp)) + 
   geom_boxplot() + scale_y_discrete(labels = c("0" = "no high BP", 
                                                "1" = "high BP")) + 
@@ -206,19 +212,23 @@ diabetes_eda_data %>%
 
 # no relationship here 
 
+ggsave(here("figures/bivariate-EDA/bivariate-3.png"), bivariate_3)
+
 # BMI and Cholesterol
-diabetes_eda_data %>%
+bivariate_4 <- diabetes_eda_data %>%
   ggplot(aes(bmi, high_chol)) + 
   geom_boxplot() + scale_y_discrete(labels = c("0" = "no high cholesterol", 
                                                "1" = "high cholesterol")) + 
   theme_minimal() + labs(title = "BMI by Cholesterol Levels")
+
+ggsave(here("figures/bivariate-EDA/bivariate-4.png"), bivariate_4)
 
 # interesting that there is no relationship between high cholesterol and bmi, as well as 
 # bmi and high blood pressure, however we do see that the median for having high cholesterol or 
 # high blood pressure is more than not having 
 
 # General Health and High Cholesterol
-diabetes_eda_data %>% 
+bivariate_5 <- diabetes_eda_data %>% 
   ggplot(aes(x = gen_hlth, fill = high_chol)) +
   geom_bar(position = "dodge", color = "black") +
   labs(title = "General Health by Cholsterol Levels") +
@@ -226,27 +236,32 @@ diabetes_eda_data %>%
                                  "1" = "high cholesterol")) + 
   theme_minimal()
 
+ggsave(here("figures/bivariate-EDA/bivariate-5.png"), bivariate_5)
 # There is a large correlation between these two variables, as general health
 # assessment gets worse, the number of people having high cholesterol increases
 # higher past the people who don't have high cholesterol 
 
-diabetes_eda_data %>% 
+# General Health and High Blood Pressure
+bivariate_6 <- diabetes_eda_data %>% 
   ggplot(aes(x = gen_hlth, fill = high_bp)) +
   geom_bar(position = "dodge", color = "black") +
-  labs(title = "General Health by Cholsterol Levels") +
+  labs(title = "General Health by Blood Pressure") +
   scale_fill_discrete(labels = c("0" = "no high BP", 
                                  "1" = "high BP")) + 
   theme_minimal()
 
+ggsave(here("figures/bivariate-EDA/bivariate-6.png"), bivariate_6)
 # There is a large correlation between these two variables, as general health
 # assessment gets worse, the number of people having high blood pressure increases
 # higher past the people who don't have high blood pressure 
 
 # BMI and General Health
-diabetes_eda_data %>%
+bivariate_7 <- diabetes_eda_data %>%
   ggplot(aes(gen_hlth, bmi)) + 
   geom_boxplot() + theme_minimal() + 
   labs(title = "BMI by General Health")
+
+ggsave(here("figures/bivariate-EDA/bivariate-7.png"), bivariate_7)
 
 # I would not say that they are completely correlated however we do see 
 # through the plot that has the general health assessment score does 
@@ -255,7 +270,7 @@ diabetes_eda_data %>%
 # skewed with a few outliers 
 
 # General Health and Difficulty walking up stairs 
-diabetes_eda_data %>% 
+bivariate_8 <- diabetes_eda_data %>% 
   ggplot(aes(x = gen_hlth, fill = diff_walk)) +
   geom_bar(position = "dodge", color = "black") +
   labs(title = "Blood Pressure by Cholsterol Levels") +
@@ -263,10 +278,11 @@ diabetes_eda_data %>%
                                  "1" = "difficultly walking up stairs")) + 
   theme_minimal()
 
+ggsave(here("figures/bivariate-EDA/bivariate-8.png"), bivariate_8)
 # There seems to be an interesting relationship between these two variables
 
 # General Health and Physical Activity 
-diabetes_eda_data %>% 
+bivariate_9 <- diabetes_eda_data %>% 
   ggplot(aes(x = gen_hlth, fill = phys_activity)) +
   geom_bar(position = "dodge", color = "black") +
   labs(title = "General Health by Physical Activity") +
@@ -274,6 +290,7 @@ diabetes_eda_data %>%
                                  "1" = "yes physical activity in 30 days")) + 
   theme_minimal()
 
+ggsave(here("figures/bivariate-EDA/bivariate-9.png"), bivariate_9)
 # Not that strong of a relationship has no physical activity in 30 days 
 # seems to outweigh having physical activity in 30 days only for the poor health
 # assessment score. Although the rise of no phyisical activity is constant 
@@ -282,7 +299,7 @@ diabetes_eda_data %>%
 # A lot of other variables like to interact with general health 
 
 # BP and Diabetes
-diabetes_eda_data %>% 
+bivariate_10 <- diabetes_eda_data %>% 
   ggplot(aes(x = high_bp, fill = diabetes_binary)) +
   geom_bar(position = "dodge", color = "black") +
   labs(title = "Blood Pressure by Diabetes") +
@@ -290,9 +307,11 @@ diabetes_eda_data %>%
                               "1" = "high BP")) +
   theme_minimal()
 
+ggsave(here("figures/bivariate-EDA/bivariate-10.png"), bivariate_10)
 # This is pretty correlated with diabetes 
 
-diabetes_eda_data %>% 
+# Cholesterol and Diabetes
+bivariate_11 <- diabetes_eda_data %>% 
   ggplot(aes(x = high_chol, fill = diabetes_binary)) +
   geom_bar(position = "dodge", color = "black") +
   labs(title = "Cholsterol Levels by Diabetes") +
@@ -300,21 +319,26 @@ diabetes_eda_data %>%
                               "1" = "high cholsterol")) +
   theme_minimal()
 
+ggsave(here("figures/bivariate-EDA/bivariate-11.png"), bivariate_11)
 # This is also pretty correlated to diabetes 
 
-diabetes_eda_data %>% 
+# General Health by Diabetes
+bivariate_12 <- diabetes_eda_data %>% 
   ggplot(aes(x = gen_hlth, fill = diabetes_binary)) +
   geom_bar(position = "dodge", color = "black") +
   labs(title = "General Health by Diabetes") +
   theme_minimal()
 
+ggsave(here("figures/bivariate-EDA/bivariate-12.png"), bivariate_12)
 # This is also pretty correlated to diabetes 
 
-diabetes_eda_data %>%
+# Diabetes and BMI
+bivariate_13 <- diabetes_eda_data %>%
   ggplot(aes(diabetes_binary, bmi)) + 
   geom_boxplot() + theme_minimal() + 
   labs(title = "BMI by Diabetes")
 
+ggsave(here("figures/bivariate-EDA/bivariate-13.png"), bivariate_13)
 # The average bmi is higher for people with diabetes although the distributions
 # overall are quite similar 
 
@@ -328,8 +352,5 @@ diabetes_eda_data %>%
 # healthcare, cholesterol check and doctor variables might not actually matter,
 # take these out in the feature engineering recipes 
 
-### write out plots and eda_data  
-# write out the plots associated with everything i looked at, and then within my 
-# eda I can highlight some and then just showcase the others 
 
 
