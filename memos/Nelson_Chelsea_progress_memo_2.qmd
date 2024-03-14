@@ -20,7 +20,7 @@ editor:
     wrap: 72
 ---
 
-::: {.callout-tip icon="false"}
+::: {.callout-tip icon="false" appearance="simple"}
 ## Github Repo Link
 
 [Final Project II - Progress Memo II](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
@@ -85,7 +85,7 @@ the associated assessment metric values for both below.
 #| label: assessment_metric_table
 #| echo: false 
 
-read_rds(here("results/nbayes_logistic_accuracy_model.rds")) %>% knitr::kable()
+read_rds(here("results/tuned_models/nbayes_logistic_accuracy_model.rds")) %>% knitr::kable()
 
 ```
 

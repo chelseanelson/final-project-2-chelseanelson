@@ -20,7 +20,7 @@ editor:
     wrap: 72
 ---
 
-::: {.callout-tip icon="false"}
+::: {.callout-tip icon="false" appearance="simple"}
 ## Github Repo Link
 
 [Final Project II - Progress Memo I](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
@@ -95,7 +95,7 @@ best ways to gain accurate predictions through my models.
 ```{r}
 #| label: loading-dataset
 
-diabetes_data_large <- read_csv(here("data/diabetes_012_health_indicators_BRFSS2015.csv")) %>% 
+diabetes_data_large <- read_csv(here("data/raw/diabetes_012_health_indicators_BRFSS2015.csv")) %>% 
   janitor::clean_names()
 
 diabetes_data_large %>% slice_head(n = 200) %>% DT::datatable()
@@ -106,7 +106,7 @@ diabetes_data_large %>% slice_head(n = 200) %>% DT::datatable()
 ```{r}
 #| label: loading-dataset_2
 
-diabetes_data_small <- read_csv(here("data/diabetes_binary_5050split_health_indicators_BRFSS2015.csv")) %>% 
+diabetes_data_small <- read_csv(here("data/raw/diabetes_binary_5050split_health_indicators_BRFSS2015.csv")) %>% 
   janitor::clean_names()
 
 diabetes_data_small %>% slice_head(n = 200) %>% DT::datatable()
