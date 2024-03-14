@@ -19,9 +19,9 @@ load(here("data/tuned_models/knn_tuned.rda"))
 load(here("data/tuned_models/nnet_tuned_2.rda"))
 load(here("data/tuned_models/knn_tuned_2.rda"))
 load(here("data/tuned_models/rf_tuned.rda"))
-load(here("data/tuned_models/rf_tuned_2.rda"))
 load(here("data/tuned_models/bt_tuned.rda"))
 load(here("data/tuned_models/bt_tuned_2.rda"))
+load(here("data/tuned_models/rf_tuned_2.rda"))
 
 # comparing sub-models ----
 ## Logistic Regressions
@@ -45,7 +45,7 @@ bt_best_2 <- show_best(bt_tuned_2, metric = "accuracy")
 
 ## Random Forests 
 rf_best_1 <- show_best(rf_tuned, metric = "accuracy")
-rf_best_2 <- show_best(rf_tuned, metric = "accuracy")
+rf_best_2 <- show_best(rf_tuned_2, metric = "accuracy")
 
 model_results_nbayes_logistic <- as_workflow_set(nbayes = fit_folds_nbayes,
                                                  logisitic = fit_folds_logistic)
@@ -75,6 +75,7 @@ model_accuracy_comparison <- model_results %>%
   collect_metrics() %>%
   filter(.metric == "accuracy") %>%
   slice_max(mean, by = wflow_id) %>% 
+  arrange(std_err) %>%
   arrange(desc(mean)) %>% 
   select(wflow_id, .metric, mean, std_err, n) %>% 
   rename(metric = .metric)

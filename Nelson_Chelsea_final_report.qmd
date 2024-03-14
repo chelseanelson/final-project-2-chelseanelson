@@ -60,12 +60,12 @@ along with their diagnosis of diabetes. More information related to this dataset
 can be found in the [References](@sec-references) section, with both the official CDC website as
 well as the Kaggle page which I collected the data from.
 
-## Data Overview & Quality 
+## Data Overview & Quality {#sec-data}
 
 ![Univariate Analysis - Diabetes Diagnosis (Original Version)](figures/figure-1.png){#fig-1}
 
 In the original version of the dataset, there was severe class imbalance in our 
-response variable of diabetes diagonsis. This can be shown in @fig-1. Additionally,
+response variable of diabetes diagnosis. This can be shown in @fig-1. Additionally,
 within this original version, there were three types of diagnoses that someone 
 could potentially receive: no diabetes, prediabetes, or diabetes. 
 
@@ -99,7 +99,7 @@ later on to take care of its missingness.
 
 Looking at further explorations of the predictor variables, I will focus on in 
 this section the variables which explored bmi, high blood pressure, 
-cholsterol levels, and the overall general health of the respondent. The 
+cholesterol levels, and the overall general health of the respondent. The 
 rest of the EDA can be observed in [Appendix I: EDA](@sec-EDA). I chose to focus mostly on these 
 variables, as after an extensive EDA, I visualized and discovered that these variables have the 
 strongest relationships between themselves as well as in relationship 
@@ -112,7 +112,7 @@ variables of interest.
 
 ![BMI - Univariate Distribution](figures/univariate-EDA/numerical_univariate_1.png){#fig-3}
 
-In @fig-3, we see that the distribution of the respondents's body mass index 
+In @fig-3, we see that the distribution of the respondent's body mass index 
 (bmi) is extremely left skewed. In order to take care of this skewness in the
 actual building of my models, I decided to perform a log10 transformation on 
 this predictor variable during the making of the pre-processing 
@@ -184,7 +184,7 @@ see how this relationship plays a part in the predictions created by my models.
 Similar to @fig-9, it is interesting to see in @fig-10 that the overall 
 distribution of the respondents' bmi when they don't have high cholesterol compared
 to when they do is extremely similar. The only difference again can be witnessed
-when looking aat the median, and 25th and 75th quartiles of the distributions. 
+when looking at the median, and 25th and 75th quartiles of the distributions. 
 Thus form this information, we see that the average bmi for people who do have 
 high cholesterol is higher than that of people without high cholesterol. The
 degree of this relationship will also play an interesting role in the predictions
@@ -311,102 +311,77 @@ for the tuning process of all of the models, thus where all of the combinations
 of the hyperparameters within the specified ranges will be evaluated exhaustively.
 In terms which parameters to tune and to how much, I based my decisions at least
 for the kitchen sink models on past examples done in class, as well as relying 
-on the originally given ranges as well. 
-
-(look over and rewrite some parts of this section potentially)
-Naive Bayes: I did not tune any of the parameters for this model as I was 
-using it as my baseline model thus I felt no need to execute or change the 
-given parameters, thus rather just fitting the base values of it to my 
-resamples. 
-
-Logistic Regression: There were no hyperparameters for this model, thus I 
-did not need to tune anything when fitting the kitchen sink version or the feature
-engineering version of the model to my resamples. 
-
-Random Forest: For my kitchen sink random forest model, I decided to tune the 
-`trees`, `min_n`, and `mtry` parameters. The `trees` parameter represents the 
-number of trees to be grown in the random forest. For this hyperparameter I 
-decided to look at a range from 100 to 2000, with increments of 6. Thus I will 
-be looking at around 317 different values for this parameter, with a grid size 
-of 6 levels. The `min_n` parameter represents the minimum number of samples 
-required to split a node in the tree. I decided for this parameter to go with 
-the range that they already previous associated with this parameter. However,
-I decide to look at the range with increments of 4. Thus I will be looking at 
-around ___ different values for this parameter, with a grid size of 4 levels. 
-Lastly, I decided to tune the `mtry` parameters which represents the number of 
-variables randomly sampled as candidates at each split. I decided to look at 
-a range from 1 to 7, with increments of 1. Thus I will be looking at 7 different
-values, with a grid size of 1 level. However for my feature engineering random
-forest model, I decided to base what I tune on how well my kitchen sink random
-forest model performed beforehand. Thus for this model, I tuned the ____ 
-parameters. (explain why I did each of these)
-
-Boosted Trees:
-
-$K$-Nearest Neighbors: For my kitchen sink $k$-nearest neighbors model, I 
-decided to tune the `neighbors` parameter. The `neighbors` parameter represents 
-____ . For this hyperparameter, I decided to look at the range from 1 to 15, 
-with increments of 5. Thus I will be looking at around 3 different values 
-for this parameter, with a grid size of 5 levels. However for my feature
-engineering $k$-nearest neighbors model, I decided to stick with the original
-range given which is 1 to 10 with increments of 5. 
-Thus I will be looking at around 2 values for this parameter, with a
-grid size of 5 levels. (this doesn't seem right). I chose to make this change 
-because _____. 
-
-Neutral Network: For my kitchen sink neutral network model, I decided to tune the
-`epochs` and `hidden_units` parameters. The `epochs` parameter represents ____. 
-For this hyperparameter, I decided to stick with the original range given which
-is from 10 to 1000, with increments of 5. Thus I will be looking at around 
-199 different values for this parameter, with a grid size of 5 levels. 
-The `hidden_units` parameter represents ____. I decided for this parameter 
-to also stick with the original range given which is from 1 to 10, with 
-increments of 5. Therefore, I will be looking at around 2 different values for 
-this parameter, with a grid size of 5 levels. For the feature engineering 
-neutral network model, I decided to stick with a similar tuning and resampling
-method, however changing the amount of levels from 5 to 4 to ensure a faster 
-model tuning sequence. 
-
-- Describe any parameters that will be tuned
-    - What are the ranges to be used?
-    - How many different values are you looking at?
-    - What is the grid size of the parameter?
-    - What type of iterations are you using?
+on the originally given ranges as well. Afterwards, my goal was to assign my 
+tuning decisions for the feature-engineered models by looking at the best
+tuning parameters from the kitchen sink models. However, within this decision
+as well I had to weigh my the cost of tuning to a heavy extent with being time
+efficient in building the models. I have included specifics on how I tuned
+each model, within [Appendix II: Tuning Models Selections](#sec-tuning) 
  
 In total, I made 5 different recipes to be used with my models. Three of those
 models are baseline/kitchen sink recipes, whereas the last two have more 
 feature engineering components. 
 
 Looking first at the kitchen sink recipes, I first made one specifically for 
-my baseline Naive Bayes model. Within this recipe, I included _____. 
-I did this because ______. I did not dummy or turn numerical my categorical 
-variables for this recipe, as I will do for the rest,
-as the Naive Bayes model is able to work around being given straight categorical
-variables, within no need for change. The second kitchen sink recipe that I created
-was for my parametric models, neutral network and logistic regression models. 
-For this recipe, I included _______. I did this because ______. As this was 
-the kitchen sink/baseline recipe for my models, I decided not to add multiple 
-different factors into its creation. Lastly in terms of my kitchen sink recipes,
-I made one specifically for my tree-based models thus the boosted trees, random
-forest, and $k$-nearest neighbors models. This recipe includes ______. I 
-did this because ______. Unlike the parametric models recipe, I decided to one 
-hot code my categorical variables because ______. 
+my baseline Naive Bayes model. Within this recipe, I included the removal of zero variance, 
+as well as normalized my numerical predictors. I did these features help 
+reduce the model's complexity and potentially avoid issues such as overfitting. 
+These preprocessing steps help create a cleaner, more informative dataset for
+training the model, potentially leading to better generalization and predictive 
+accuracy on unseen data. I did not dummy or turn numerical my categorical 
+variables for this recipe, as the Naive Bayes model is able to work around 
+being given straight categorical variables, with no need for change. 
+
+The second kitchen sink recipe that I created was for my parametric models, 
+the neural network and logistic regression models. 
+For this recipe, I included similar features such as the removal of zero variance,
+and the normalization of my predictors for similar reasons as mention before. 
+Within this version, I also now included the altering of the categorical 
+variables to being numerical through using treatment encoding, being able to
+to improve the performance of your models by enhancing their ability to 
+interpret and utilize categorical information. As this was the kitchen 
+sink/baseline recipe for my models, I decided not to add multiple different 
+factors into its creation.
+
+Lastly in terms of my kitchen sink recipes, I made one specifically for my 
+tree-based models thus the boosted trees, random forest, and $k$-nearest 
+neighbors models. This recipe includes the same features that were seen
+in the kitchen sink parameteric models recipe, however instead of doing 
+treatment encoding, I did one-hot encoding when transforming my categorical
+variables to being numeric. I did this because type of encoding is 
+very versatile works well when when there is no natural order among the 
+categories.
 
 Turning the attention to my feature engineering recipes, one was designed 
-to again fit my parametric models, being the logistic regression and neutral 
+to again fit my parametric models, being the logistic regression and neural 
 network models. Whereas the other was fit to work with the tree-based models, 
 being the boosted trees, random forest, and $k$-nearest neighbors models. 
-When observing the former recipe, I now included ______ in addition to the 
+
+When observing the former recipe, I now included the removal of variables, that 
+I felt did not contribute to the prediction of diabetes diagnosis, those 
+being if the respondent had healthcare or not, if they had had a cholesterol check
+in the past five years, and if they needed to go to the doctor but couldn't pay 
+for it. Additionally, I included the a log transformation for some of my numerical
+variables, as when looking at their univariate distributions, they showcased
+a lot of skewedness. Furthermore, I wanted to control for the correlated between
+certain variables, thus including a feature to lessen their influence if 
+two variables correlations was greater than 0.6. Lastly, I had two interacts features
+between my blood pressure and cholesterol variables, as well as one between 
+my bmi and general health assessment variables. I did this because, these specific
+variables as highlighted in the [Data Overview & Quality](#sec-data) section seem
+to have extremely strong relationships. All of these changes are in addition to the 
 aspects that were already apart of the kitchen sink parametric recipe. I decided
 to add these specific aspects as I felt they would add more complex and definition 
-to the building of my models. Within the latter recipe, I decided to add ______
-in addition to the aspects that were already apart of the kitchen sink tree-based
-recipe. I found these additions necessary as I felt they targeted points of interest 
-or lack there of, in terms of helping produce the best models for predicting 
-diabetes diagnosis. Unlike in the feature engineering parametric recipe, 
-I did not include any interacts between the different predictor variables as 
-the tree-based models already cover for any interacts between variables that
-could also be affecting the model's performance. 
+to the building of my models. 
+
+Within the latter recipe, I decided to add all of the new features mentioned
+in my featured engineered parameteric recipe, although not including 
+the interaction features as tree-based models already cover for any 
+interacts between variables that could also be affecting the model's performance.  
+Again, these additions are in addition to the aspects that were already apart 
+of the kitchen sink tree-based recipe. I found these additions necessary as 
+I felt they targeted points of interest or lack there of, in terms of helping 
+produce the best models for predicting diabetes diagnosis.
 
 ## Model Building 
 
@@ -429,59 +404,102 @@ to hopefully find and achieve even better predictions and accuracy metrics. In
 terms of the different model types, I have listed out what were concluded to be
 the best parameters for each.
 
-Neutral Network (kitchen sink): `epochs` = 257 and `hidden_units` = 7
+Neural Network (kitchen sink): `epochs` = 257 and `hidden_units` = 7
 
-Neutral Network (feature engineering): `epochs` = 1000 and `hidden_units` = 4
+Neural Network (feature engineering): `epochs` = 1000 and `hidden_units` = 4
 
 $K$-Nearest Neighbors (kitchen sink): `neighbors` = 15
 
 $K$-Nearest Neighbors (feature engineering): `neighbors` = 15
 
-Random Forest (kitchen sink): 
+Random Forest (kitchen sink): `mtry` = 5, `trees` = 2000, and `min_n` = 40
 
-Random Forest (feature engineering):
+Random Forest (feature engineering): `mtry` = 5 and `min_n` = 40
 
-Boosted Tree (kitchen sink):
+Boosted Tree (kitchen sink): `mtry` = 5, `trees` = 1240, `min_n` = 27, and `learn_rate` = 0.0158
 
-Boosted Tree (feature engineering):
+Boosted Tree (feature engineering): `mtry` = 5, `min_n` = 40, `learn_rate` = 0.631
 
 Additionally, it is interesting to see that after adding on more steps and 
 features in the recipes, the performance of the logistics model type increased, 
-whereas the performance of the neutral network model type got worse. The 
+whereas the performance of the neural network and boosted tree model types got worse. The 
 $k$-nearest neighbors model type did not really change, although gaining more 
 room for standard error in overall how the tuned resampling models performed. It would 
 be interesting to go back in the future and create another recipe to see where
-the actual performance limiting elements are located within the recipe. 
+the actual performance limiting elements are located within the recipe. As
+well as tuning the parameters in different ranges to look and see different
+results. I think for example, that because I decided to tune less parameters
+in most of my heavily feature engineered models, this impacted their performance
+results. 
 
 After removing the variables assessing if someone had healthcare, if they 
 needed to see a doctor, but didn't have money or not, and  if someone had had 
 a cholesterol check in the last five years or not from being predictive variables 
 in my pre-processing feature engineered recipes, it is interesting to 
-see that the performance of said models did not follow my hypothesis and 
-thoughts on how those variables do not affect the response variable much in 
-terms of having predictive importance, as the feature engineered models did not
-see much change in the accuracy of their predictions. 
+see that the performance of said models did not really change in performance. Thus,
+meaning that these variables did not really have a presence within my predictive
+models, however at the same time not adding biases to the models as well
+when they were included. 
 
 Overall, as seen in the above performance comparison table, I will be 
-selecting the _____ ______ model as the final model to test as it has the 
+selecting the kitchen sink boosted tree model as the final model to test as it has the 
 best performance when being assessed via our main performance metric of 
 accuracy. Additionally, because of the small standard deviation associated 
 with the values, we can conclude that on average, most of the different tuned 
-models stayed around this level of accuracy. It was surprising or not 
-surprising that this model won has ____. 
+models stayed around this level of accuracy. It was surprising
+surprising that my kitchen sink boosted tree model performed the best has I felt 
+that there were still some biases that played into this model, that I felt I 
+controlled better for in my heavily feature engineered models. However, I felt more surprising on 
+the overall rankings of the models, as I did not expect for my featured engineered
+logistic model to performance better than my featured engineered boosted tree,
+$k$-nearest neighbors models, and random forest models,
+while also I did not expect for both of my neural network models to perform s
+so well in comparison to the others. This is because I have never
+used them before, so I was unaware going in on how they performed usually. 
+I feel it would be interesting to go back in the future and look at these 
+differences in more depth. 
 
 ## Final Model Analysis
 
 - Where you fit your final/winning model to the full training and then testing data
 - Assess the final model’s performance with at least the metric used to determine the winning model, could also use other metrics as well 
-- Should include an exploration of predictions vs the true values (confusion matrix)
-- Is the model any good? IT might be the best of the models you tried, but does the effort of building a predictive model really pay off – is it that much better than a baseline/null model?
-- Were there any features of the model you selected that make it the best (e.g. fits nonlinearity well)?
+
+```{r}
+#| label: performance-tables
+
+read_rds(here("results/final_model/performance_table.rds")) %>% knitr::kable()
+```
+
+**Accuracy**:
+
+**MCC**: 
+
+![Confusion Matrix Heatmap](figures/final_model/heatmap.png)
+
+describe it here 
+
+I think the final model is extremely good, as the accuracy value did not 
+change terribly from the resampling training data to the test data. Additionally,
+this model perform a lot better than the baseline naive bayes model, which 
+had an accuracy value of 68% in comparison to the 75% accuracy rate we 
+achieved with our final model. I think in the future it would be beneficial 
+however to go back and try out different pre-processing techniques to see
+where the true difference can be made in terms of increasing our accuracy
+value even more. I think that the boosted tree models reliability in terms of 
+its scalability and flexibility in the type of data it receives help to make it 
+the best model out of the ones that I chose to use. 
 
 ## Conclusions 
 
 - State any conclusions or discoveries/insights. 
 - This is a great place for future work, new research questions, and next steps 
+
+In the future I would like to go back and look more in depth at which tuning
+parameters worked and provided the best results for each model, thus being
+able to dial more into what works and what doesn't, hopefully creating a completely
+or close to completely accurate model. As I felt that in terms of how I picked
+my tuning parameters it was not the most reliable methods, but rather I focused
+more on time efficiency. 
 
 ## References {#sec-references}
 
@@ -496,5 +514,101 @@ surprising that this model won has ____.
 
 ### Appendix I: EDA {#sec-EDA}
 
-### Appendix II: Extras {#sec-extras}
+### Appendix II: Tuning Models Selections {#sec-tuning}
 
+I have provided below, specifics on how I tuned each model, stating the
+parameters, as well as their associated ranges and grid levels. 
+
+Naive Bayes: I did not tune any of the parameters for this model as I was 
+using it as my baseline model thus I felt no need to execute or change the 
+given parameters, thus rather just fitting the base values of it to my 
+resamples. 
+
+Logistic Regression: There were no hyperparameters for this model, thus I 
+did not need to tune anything when fitting the kitchen sink version or the feature
+engineering version of the model to my resamples. 
+
+Random Forest: For my kitchen sink random forest model, I decided to tune the 
+`trees`, `min_n`, and `mtry` parameters. The `trees` parameter represents the 
+number of trees to be grown in the random forest. For this hyperparameter I 
+decided to look at a range from 100 to 2000, with increments of 6. Thus I will 
+be looking at around 317 different values for this parameter, with a grid size 
+of 6 levels. The `min_n` parameter represents the minimum number of samples 
+required to split a node in the tree. I decided for this parameter to go with 
+the range that they already previous associated with this parameter. However,
+I decided to look at the range with increments of 4. Thus I will be looking at 
+around 10 different values for this parameter, with a grid size of 4 levels. 
+Lastly, I decided to tune the `mtry` parameters which represents the number of 
+variables randomly sampled as candidates at each split. I decided to look at 
+a range from 1 to 7, in accordance with the amount of predictor variables I had, 
+with increments of 1. Thus I will be looking at 7 different
+values, with a grid size of 1 level. For my feature engineering random
+forest model, I decided to base what I tune on how well my kitchen sink random
+forest model performed beforehand. Thus for this model, I did not tune the `trees`
+parameter value keeping it rather at 1000, while still tuning the `min_n` and
+`mtry` parameters. For the `mtry` parameter, 
+I decided to look at the range from 1 to 6, with increment of 
+6. The `mtry` parameters reflects on the square root of the amount of 
+predictors I had. Thus I will be looking at around 6 different values for 
+this parameters, with a grid size of 6 levels. I decided to tune the `min_n`
+parameters in the same manner that I did for the kitchen sink version. 
+
+Boosted Trees: For my kitchen sink boosted tree model, I decided to tune the 
+`mtry`, `min_n`, `learn_rate`, and `trees` parameters. The `trees` parameter
+represents the number of trees to build in my boosted trees. For this 
+hyperparameter, I decided to look at a range from 100 to 2000, with increments
+of 6. Thus, I will be looking at around 317 different values for this 
+parameter, with a grid size of 6 levels. The `min_n` parameter
+represents the minimum number of samples required to split a node in the tree.
+I decided for this parameter to go with the range that they already previous 
+associated with this parameter. However, I decided to look at the range with 
+increments of 4. Thus I will be looking at around 10 different values for 
+this parameter, with a grid size of 4 levels. The `mtry` parameter represents 
+the number of variables randomly sampled as candidates at each split. 
+I decided to look at a range from 1 to 7, in accordance with the amount of 
+predictor variables I had, with increments of 1. Thus I will be looking at 7 different
+values, with a grid size of 1 level. Lastly, I tuned the `learn_rate` parameter, 
+which controls the step size at each iteration while moving towards a minimum
+of the loss function. I decided to look at a range from -5 to -0.2, with increments 
+of 10. Thus, I will be looking at around 0.5 different value for this parameter,
+with a grid size of 10 levels. For my feature engineering boosted tree
+model, I decided to base what I tune on how well my kitchen sink 
+boosted tree model performed beforehand. I did not tune the `trees`
+parameter value keeping it rather at null, while still tuning the `min_n`,
+`mtry`, and `learn_rate` parameters.  For the `mtry` parameter, 
+I decided to look at the range from 1 to 6, with increment of 
+6. The `mtry` parameters reflects on the square root of the amount of 
+predictors I had. Thus I will be looking at around 6 different values for 
+this parameters, with a grid size of 6 levels. I decided to tune the `min_n`
+parameters in the same manner that I did for the kitchen sink version. Similarly,
+for the `learn_rate` parameter I decided to tune the paramater in the same
+manner that I did for the kitchen sink version, however decreasing the amount
+of levels in order to be able to observe more values during the tuning 
+process. Thus now looking at at grid size of 5 levels. 
+
+$K$-Nearest Neighbors: For my kitchen sink $k$-nearest neighbors model, I 
+decided to tune the `neighbors` parameter. The `neighbors` parameter represents 
+the number of nearest neighbors to consider in the model. 
+For this hyperparameter, I decided to look at the range from 1 to 15, 
+with increments of 5. Thus I will be looking at around 3 different values 
+for this parameter, with a grid size of 5 levels. Additionally, for my feature
+engineering $k$-nearest neighbors model, I decided to stick with the original
+range given which is 1 to 10 with increments of 5. Thus I will be looking at 
+around 2 values for this parameter, with a grid size of 5 levels. 
+I chose to make this change based on the selected best tuning parameter values 
+for `neighbors` in the kitchen sink version. 
+
+Neural Network: For my kitchen sink neural network model, I decided to tune the
+`epochs` and `hidden_units` parameters. The `epochs` parameter represents the 
+number of times the entire training dataset is passed forward and backward through the 
+neural network. For this hyperparameter, I decided to stick with the original
+range given which is from 10 to 1000, with increments of 5. 
+Thus I will be looking at around 199 different values for this parameter, 
+with a grid size of 5 levels. The `hidden_units` parameter specifies the number of neurons in
+each hidden layer of the MLP. I decided for this parameter 
+to also stick with the original range given which is from 1 to 10, with 
+increments of 5. Therefore, I will be looking at around 2 different values for 
+this parameter, with a grid size of 5 levels. For the feature engineering 
+neural network model, I decided to stick with a similar tuning and resampling
+method, however changing the amount of levels from 5 to 4 to ensure a faster 
+model tuning sequence. 
