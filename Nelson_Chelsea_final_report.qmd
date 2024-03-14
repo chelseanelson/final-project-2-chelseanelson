@@ -508,7 +508,7 @@ achieved with our final model. I think in the future it would be beneficial
 however to go back and try out different pre-processing techniques to see
 where the true difference can be made in terms of increasing our accuracy
 value even more. I think that the boosted tree models reliability in terms of 
-its scalability and flexibility in the type of data it receives help to make it 
+its scalability and flexibility in the type of data it receives helps to make it 
 the best model out of the ones that I chose to use. 
 
 ## Conclusions 

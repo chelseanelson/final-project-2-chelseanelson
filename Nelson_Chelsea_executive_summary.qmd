@@ -23,30 +23,153 @@ editor:
 
 [Final Project II Repo](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
 :::
+```{r}
+#| label: loading-packages
+
+library(tidyverse)
+library(tidymodels)
+library(here)
+
+```
+    
     
 ## Purpose
 This report aims to predict diabetes diagnoses based on general health questions using machine learning models and extensive preprocessing techniques. The dataset utilized is sourced from the Centers for Disease Control and Prevention's (CDC) Behavioral Risk Factor Surveillance System (BRFSS).[^1] The primary objective is to develop a binary classification model to accurately identify individuals as either having diabetes or not.
 
 The purpose of this report is to investigate the factors contributing to diabetes diagnoses and develop a predictive model that could potentially assist in early detection. By analyzing various health indicators and lifestyle survey data, we aim to gain insights into the factors influencing diabetes and improve our understanding of its diagnosis.
 
-[^1]: The dataset was sourced from [Kaggle Diabetes Health Indicators Dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_012_health_indicators_BRFSS2015.csv) and [Centers for Disease Control and Prevention's (CDC) Behavioral Risk Factor Surveillance System](https://www.cdc.gov/brfss/annual_data/annual_2015.html)
-
 ## Major Results
-Data Overview & Quality: Initial data had severe class imbalance, which was addressed by creating a balanced dataset with simplified response variables. Extensive exploratory data analysis (EDA) was conducted to understand the relationships between predictor variables and the response variable.
-- talk about class imbalance 
-- how I fixed it and created my own dataset 
-- and how I dealt with and saw ther elationship between some variables and my reponse variable 
 
-Model Building: Various machine learning models including Naive Bayes, Logistic Regression, Random Forest, Boosted Tree, $k$-Nearest Neighbors, and Single-Layer Neural Network were trained and evaluated. Preprocessing techniques such as feature engineering and hyperparameter tuning were applied to improve model performance.
-- talk about my recipes a little bit
-- the models I used 
-- and then some of the interesting results from comparing the results 
-- showcase the associated results 
+### Data Overview & Quality
 
+The initial data had severe class imbalance in our 
+response variable of diabetes diagnosis. Additionally, within this original 
+version, there were three types of diagnoses that someone 
+could potentially receive: no diabetes, prediabetes, or diabetes. 
 
-Final Model Analysis: The boosted tree model emerged as the best performer with an accuracy of 75% and a Matthews Correlation Coefficient (MCC) of approximately 0.496 on the testing dataset. The confusion matrix heatmap illustrates the model's effectiveness in correctly classifying instances of diabetes diagnoses.
-- talk more on this 
-- showcase my tables and heatmap
+![Diabetes Diagnosis (Original Version)](figures/figure-1.png){#fig-1}
+
+In order to take care of this class imbalance however, I made an update to the 
+dataset to have an even 50-50 split, while also combining the diagnoses of 
+prediabetes and diabetes into one having diabetes diganosis as based on an ADA expert 
+panel's thoughts on having prediabetes as up to 70% of individuals with prediabetes 
+will eventually develop diabetes. [^2]
+
+![Diabetes Diagnosis (Updated Version)](figures/figure-3.png){#fig-2}
+
+Additionally during this stage, an extensive exploratory data analysis (EDA) was 
+conducted to look deeper at the distributions of the predictor variables, as well
+as to understand the relationships between each other and with 
+the response variable. Through doing so, I was able to gain more knowledge 
+on how I wished to perform the feature engineering components of my models, 
+specifically looking at finding interactions between the different predictive 
+variables, as well as controlling for any skewedness or biases that could be 
+present in my predictors. 
+
+### Model Building
+
+In terms of the model types that I fitted, I selected to use 
+the Naive Bayes, Logistic Regression, Random Forest, Boosted Tree, 
+$k$-Nearest Neighbors, and a Single-Layer Neural Network models for 
+my model analysis. These models are an arrangement from baseline 
+to highly advanced model types, thus are able to explore different 
+modeling approaches and assess their performance in predicting diabetes diagnoses. 
+This allows us to gain insights into which factors are most influential in 
+detecting diabetes and how different modeling techniques handle the 
+complexities of the data.
+
+Furthermore, within this model building process, preprocessing techniques 
+such as feature engineering and hyperparameter tuning were appled to help
+improve models' performances. Additionally, these preprocessing steps a
+imed to improve model generalization and predictive accuracy by 
+refining the dataset and incorporating informative features, through steps 
+such as removing zero variance, controlling for correlation between variables,
+and normalizing the numerical predictors. 
+
+In terms of assessing which model performed the best, I used accuracy as my 
+primary assessment metric. Accuracy provides a clear measure of the overall 
+correctness of the model's predictions, indicating the proportion of correctly 
+classified instances out of the total number of instances. 
+
+**Performance Comparison Table**
+```{r}
+#| label: performance-table
+
+read_rds(here("results/tuned_models/model_accuracy_comparison.rds")) %>% knitr::kable()
+```
+
+It is interesting to see from the performance the performance comparison table 
+that the featured engineered or second version of the logistics model type increased, 
+whereas the performance of the neural network and boosted tree model types got worse. 
+Additionally, the $k$-nearest neighbors and random forest model types did not 
+really change, although gaining more room for standard error in how the tuned 
+resampling models performed overall. However, despite some surprises in model performance 
+rankings, the final model's accuracy surpassed that of the baseline naive bayes
+model, indicating its potential in real-world applications. 
+
+Overall, I will be selecting the kitchen sink (1st) boosted tree model as the final 
+model to test as it has the best performance when being assessed via our main 
+performance metric of accuracy with a score of 75%. Although, it was
+surprising that the kitchen sink boosted tree model performed the best has I felt 
+that there were still some biases that played into this model, I am satisfied with
+the results as boosted tree models are extremely scalability, flexibility, and 
+show reliable performances.
+
+### Final Model Analysis
+
+After selecting my final model choice, I was then was able to assess the final 
+model's performance, seeing how well the model generalizes to unseen data. This 
+assesment helps provide an indication of how well the model is likely to 
+perform in real-world scenarios.
+
+**Performance Table**
+```{r}
+#| label: accuracy_mcc_table
+
+read_rds(here("results/final_model/performance_table.rds")) %>% knitr::kable()
+```
+
+As seen from the performance table, the boosted tree model evaluation achieved 
+an accuracy of 74.69%, indicating strong predictive capability in diagnosing 
+diabetes. Furthermore, the Matthews Correlation Coefficient (MCC) stands at 
+0.496, underscoring the model's effectiveness in handling imbalanced data and 
+providing a holistic assessment of its performance. These metrics collectively 
+highlight the robustness and reliability of our predictive model in identifying 
+diabetes cases accurately.
+
+![Confusion Matrix Heatmap](figures/final_model/heatmap.png)
+
+This confusion matrix heatmap helps to illustrates the model's effectiveness 
+in correctly classifying instances of diabetes diagnoses. We can see that 
+the model currently predicted 7926 instances where the people did have 
+diabetes, being a true positive, however having 2069 instances where it incorrectly 
+predicted someone had diabetes when they didn't, being a false positive. From
+the other side, we see that the model correctly predicted 7005 instances where
+the people did not have diabetes, being a true negative, however there being 2990
+instances of error, as the model predicted that they did not have diabetes when 
+they actually did, creating a false negative. This matrix seems to align well
+with our accuracy value of 0.75.
+
+The final model is extremely good, as the accuracy value did not change from 
+our resampling to testing data. Additionally, this model performs a lot better 
+than our baseline naive bayes model, showcasing the importance in expanding
+this prediction problem further to gain better results.
 
 ## Conclusions
-The boosted tree model demonstrated strong performance and reliability in predicting diabetes diagnoses. Despite initial class imbalances and challenges in preprocessing, the final model surpassed baseline models and showcased potential for real-world applications. Future work involves refining tuning parameters and exploring additional preprocessing techniques to further enhance model performance.
+
+In conclusion, we were able to approach our goal of predicting diabetes 
+diagnoses based on general health questions, through utilizing various machine 
+learning models and extensive preprocessing techniques. 
+
+The boosted tree model demonstrated strong performance and reliability in 
+predicting diabetes diagnoses. Despite initial class imbalances and challenges 
+in preprocessing, the final model surpassed baseline models and showcased 
+potential for real-world applications. Future work involves refining tuning 
+parameters and exploring additional preprocessing techniques to further 
+enhance model performance.
+
+## References
+
+[^1]: The dataset was sourced from [Kaggle Diabetes Health Indicators Dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_012_health_indicators_BRFSS2015.csv) and [Centers for Disease Control and Prevention's (CDC) Behavioral Risk Factor Surveillance System](https://www.cdc.gov/brfss/annual_data/annual_2015.html)
+
+[^2]: These information was cited from the [National Library of Medicine - Prediabetes: A high-risk state for developing diabetes](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3891203/#:~:text=According%20to%20an%20ADA%20expert,prediabetes%20will%20eventually%20develop%20diabetes.)
