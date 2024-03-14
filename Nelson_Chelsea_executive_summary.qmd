@@ -23,16 +23,30 @@ editor:
 
 [Final Project II Repo](https://github.com/stat301-2-2024-winter/final-project-2-chelseanelson)
 :::
+    
+## Purpose
+This report aims to predict diabetes diagnoses based on general health questions using machine learning models and extensive preprocessing techniques. The dataset utilized is sourced from the Centers for Disease Control and Prevention's (CDC) Behavioral Risk Factor Surveillance System (BRFSS).[^1] The primary objective is to develop a binary classification model to accurately identify individuals as either having diabetes or not.
 
-- Should summarize the key points of the report
+The purpose of this report is to investigate the factors contributing to diabetes diagnoses and develop a predictive model that could potentially assist in early detection. By analyzing various health indicators and lifestyle survey data, we aim to gain insights into the factors influencing diabetes and improve our understanding of its diagnosis.
 
-## Purpose 
-
-- Should restate the purpose of the report
-- What the dataset is, what we are predicting, and why I am doing this 
+[^1]: The dataset was sourced from [Kaggle Diabetes Health Indicators Dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data?select=diabetes_012_health_indicators_BRFSS2015.csv) and [Centers for Disease Control and Prevention's (CDC) Behavioral Risk Factor Surveillance System](https://www.cdc.gov/brfss/annual_data/annual_2015.html)
 
 ## Major Results
+Data Overview & Quality: Initial data had severe class imbalance, which was addressed by creating a balanced dataset with simplified response variables. Extensive exploratory data analysis (EDA) was conducted to understand the relationships between predictor variables and the response variable.
+- talk about class imbalance 
+- how I fixed it and created my own dataset 
+- and how I dealt with and saw ther elationship between some variables and my reponse variable 
 
-- Most important results (i.e. table of the full comparison between models, looking at how the best model performs across different metrics, a confusion matrix for my best model) 
+Model Building: Various machine learning models including Naive Bayes, Logistic Regression, Random Forest, Boosted Tree, $k$-Nearest Neighbors, and Single-Layer Neural Network were trained and evaluated. Preprocessing techniques such as feature engineering and hyperparameter tuning were applied to improve model performance.
+- talk about my recipes a little bit
+- the models I used 
+- and then some of the interesting results from comparing the results 
+- showcase the associated results 
 
-## Conclusions 
+
+Final Model Analysis: The boosted tree model emerged as the best performer with an accuracy of 75% and a Matthews Correlation Coefficient (MCC) of approximately 0.496 on the testing dataset. The confusion matrix heatmap illustrates the model's effectiveness in correctly classifying instances of diabetes diagnoses.
+- talk more on this 
+- showcase my tables and heatmap
+
+## Conclusions
+The boosted tree model demonstrated strong performance and reliability in predicting diabetes diagnoses. Despite initial class imbalances and challenges in preprocessing, the final model surpassed baseline models and showcased potential for real-world applications. Future work involves refining tuning parameters and exploring additional preprocessing techniques to further enhance model performance.
