@@ -1,7 +1,13 @@
 # Final Project Repository
 
-Welcome to my final project repository! This project focuses on addressing the 
-prediction problem of
+Welcome to my final project repository! This project is dedicated to addressing 
+the prediction problem of diabetes diagnoses using a comprehensive dataset of 
+general health inquiries. Through rigorous analysis and model development, 
+we have identified key insights, tackled class imbalances, and 
+culminated in selecting the boosted tree model as our top performer, 
+achieving an impressive accuracy rate of 75%. Thus delving into the 
+intricacies of predictive modeling in healthcare, striving to contribute 
+valuable insights to the field.
 
 ## Project Structure
 
@@ -26,7 +32,8 @@ If you want to explore or run the code, I would recommend starting with
 `rscripts/1_initial_setup.R` to understand the distribution and layout of the 
 original data and then running in order after that in order to see the 
 development and creation of the different types of models. I would finish off
-by looking at `rscripts/4_model_analysis.R` to see how each model performs, 
+by looking at `rscripts/4_model_analysis.R` through 
+`rscripts/6_assess_final_model.R` to see how each model performs, 
 looking at which has the most accuracy. Otherwise, all of the associated model 
 data, fitted data, tables of the performance analyses, and the recipes in which
 I created can be found in their respective rscripts. 
@@ -37,7 +44,7 @@ and `memos/Nelson_Chelsea_progress_memo_2.html` as well as
 `Nelson_Chelsea_final_report.html` for a complete overview of my project, 
 from start to finish. 
 
-If you would just like a quicker overview of the main insights 
+If you would like an even a quicker overview of the main insights 
 generated from my project, I would recommend reading through 
 `Nelson_Chelsea_executive_summary.html` as that is a short executive 
 summary of all the work and insights that I gained from my work.

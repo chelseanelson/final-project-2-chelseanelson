@@ -133,15 +133,11 @@ dim(diabetes_test)
 set.seed(123451)
 diabetes_folds <- vfold_cv(diabetes_train, v = 10, repeats = 5, strata = diabetes_binary)
 
-# set up controls for fitting resamples
-keep_pred <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
-
 # write out split, train, test and folds 
 save(diabetes_splits, file = here("data/model_data/diabetes_splits.rda"))
 save(diabetes_train, file = here("data/model_data/diabetes_train.rda"))
 save(diabetes_test, file = here("data/model_data/diabetes_test.rda"))
 save(diabetes_folds, file = here("data/model_data/diabetes_folds.rda"))
-save(keep_pred, file = here("results/keep_preds.rda"))
 
 
 

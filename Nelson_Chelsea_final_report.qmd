@@ -62,7 +62,7 @@ well as the Kaggle page which I collected the data from.
 
 ## Data Overview & Quality {#sec-data}
 
-![Univariate Analysis - Diabetes Diagnosis (Original Version)](figures/figure-1.png){#fig-1}
+![Diabetes Diagnosis (Original Version) - Univariate Distribution](figures/figure-1.png){#fig-1}
 
 In the original version of the dataset, there was severe class imbalance in our 
 response variable of diabetes diagnosis. This can be shown in @fig-1. Additionally,
@@ -88,7 +88,7 @@ accounts for many misleading interpretations of the model performance metrics
 that could have arisen, allowing for me to be able to generalize the model's 
 predictions better. 
 
-![Univariate Analysis - Diabetes Diagnosis (Updated Version)](figures/figure-3.png){#fig-2}
+![Diabetes Diagnosis (Updated Version) - Univariate Distribution](figures/figure-3.png){#fig-2}
 
 I have visually showcased these changes through @fig-2. We can now see that 
 the two levels are balanced with each consisting of 39977 instances. 
@@ -262,7 +262,7 @@ body mass indexes associated with each distribution increases when the person
 has diabetes versus when they do. 
 
 After looking at these variables as well as others that will be expressed in 
-the [Appendix I: EDA](@sec-EDA), I am really to add on more aspects to 
+the [Appendix I: EDA](@sec-EDA), I am ready to add on more aspects to 
 my pre-processing stage for my second versions of my models 
 than what I did previously when working with my kitchen
 sink and baseline models. 
@@ -377,8 +377,8 @@ to the building of my models.
 Within the latter recipe, I decided to add all of the new features mentioned
 in my featured engineered parameteric recipe, although not including 
 the interaction features as tree-based models already cover for any 
-interacts between variables that could also be affecting the model's performance.  
-Again, these additions are in addition to the aspects that were already apart 
+interacts between variables that could also be affecting the model's performance. Again, 
+these additions are in addition to the aspects that were already apart 
 of the kitchen sink tree-based recipe. I found these additions necessary as 
 I felt they targeted points of interest or lack there of, in terms of helping 
 produce the best models for predicting diabetes diagnosis.
@@ -423,7 +423,7 @@ Boosted Tree (feature engineering): `mtry` = 5, `min_n` = 40, `learn_rate` = 0.6
 Additionally, it is interesting to see that after adding on more steps and 
 features in the recipes, the performance of the logistics model type increased, 
 whereas the performance of the neural network and boosted tree model types got worse. The 
-$k$-nearest neighbors model type did not really change, although gaining more 
+$k$-nearest neighbors and random forest model types did not really change, although gaining more 
 room for standard error in overall how the tuned resampling models performed. It would 
 be interesting to go back in the future and create another recipe to see where
 the actual performance limiting elements are located within the recipe. As
@@ -446,23 +446,25 @@ selecting the kitchen sink boosted tree model as the final model to test as it h
 best performance when being assessed via our main performance metric of 
 accuracy. Additionally, because of the small standard deviation associated 
 with the values, we can conclude that on average, most of the different tuned 
-models stayed around this level of accuracy. It was surprising
+models stayed around this level of accuracy. It was
 surprising that my kitchen sink boosted tree model performed the best has I felt 
 that there were still some biases that played into this model, that I felt I 
 controlled better for in my heavily feature engineered models. However, I felt more surprising on 
 the overall rankings of the models, as I did not expect for my featured engineered
 logistic model to performance better than my featured engineered boosted tree,
-$k$-nearest neighbors models, and random forest models,
-while also I did not expect for both of my neural network models to perform s
-so well in comparison to the others. This is because I have never
-used them before, so I was unaware going in on how they performed usually. 
-I feel it would be interesting to go back in the future and look at these 
-differences in more depth. 
+$k$-nearest neighbors models, and random forest models. Also I did not expect for 
+both of my neural network models to perform so well in comparison to the others. 
+This is because I have never used them before, so I was unaware going in on 
+how they performed usually. I feel it would be interesting to go back in the 
+future and look at these differences in more depth. 
 
 ## Final Model Analysis
 
-- Where you fit your final/winning model to the full training and then testing data
-- Assess the final model’s performance with at least the metric used to determine the winning model, could also use other metrics as well 
+After fitting my winning model to the full training and then testing data, I can 
+now assess the final model's performance being able to see how well the model 
+generalizes to unseen data by examining its performance metrics on the testing 
+dataset. Thus providing an indication of how well the model is likely to 
+perform in real-world scenarios.
 
 ```{r}
 #| label: performance-tables
@@ -470,13 +472,33 @@ differences in more depth.
 read_rds(here("results/final_model/performance_table.rds")) %>% knitr::kable()
 ```
 
-**Accuracy**:
+**Accuracy**: This metric measures the proportion of instances in which the predicted
+value was correctly classified. Thus, being the ratio of correctly predicted 
+instances to the total instances. Thus the value of 0.75 tells us that 
+the model had an accuracy of 75% in terms of correctly classifying if someone
+had diabetes or not. 
+ 
 
-**MCC**: 
+**MCC**: MCC is a metric that takes into account all four elements of the 
+confusion matrix (true positives, true negatives, false positives, and 
+false negatives). It ranges from -1 to 1, where 1 indicates perfect prediction, 
+0 indicates random prediction, and -1 indicates total disagreement between 
+prediction and observation. An MCC value of approximately 0.496 for 
+indicates a moderate level of correlation between the predicted and actual 
+instances.
 
-![Confusion Matrix Heatmap](figures/final_model/heatmap.png)
+![Confusion Matrix Heatmap](figures/final_model/heatmap.png){#heatmap}
 
-describe it here 
+The [Confusion Matrix](@heatmap) tells us how the boosted tree model's predictions aligned
+with the truth from the testing set. Thus from the matrix, we can see that 
+the model currently predicted 7926 instances where the people did have 
+diabetes, being a true positive, however having 2069 instances where it incorrectly 
+predicted someone had diabetes when they didn't, being a false positive. From
+the other side, we see that the model correctly predicted 7005 instances where
+the people did not have diabetes, being a true negative, however there being 2990
+instances of error, as the model predicted that they did not have diabetes when 
+they actually did, creating a false negative. This matrix seems to align well
+with our accuracy value of 0.75.
 
 I think the final model is extremely good, as the accuracy value did not 
 change terribly from the resampling training data to the test data. Additionally,
@@ -491,15 +513,33 @@ the best model out of the ones that I chose to use.
 
 ## Conclusions 
 
-- State any conclusions or discoveries/insights. 
-- This is a great place for future work, new research questions, and next steps 
+In conclusion, we were able to approach our goal of predicting diabetes 
+diagnoses based on general health questions, through utilizing various machine 
+learning models and extensive preprocessing techniques. 
+
+Within it is important to highlight again, the initial class imbalances in our 
+dataset, which was addressed by creating a new balanced dataset with simplified 
+response variables. After preprocessing, which included feature engineering and 
+addressing skewed distributions, our models were trained and evaluated.
+
+The final model, a boosted tree model, demonstrated strong performance with an 
+accuracy of 75% and a moderate Matthews Correlation Coefficient (MCC) of 
+approximately 0.496 on the testing dataset. 
+
+The confusion matrix heatmap helps to illustrated the model's predictions,
+aligning well with the actual values, reflecting the model's effectiveness in 
+correctly classifying instances of diabetes diagnoses.
+
+Overall, the boosted tree model stood out among others, showcasing scalability, 
+flexibility, and reliable performance. Despite some surprises in model performance 
+rankings, the final model's accuracy surpassed that of baseline models, 
+indicating its potential in real-world applications. 
 
 In the future I would like to go back and look more in depth at which tuning
 parameters worked and provided the best results for each model, thus being
-able to dial more into what works and what doesn't, hopefully creating a completely
-or close to completely accurate model. As I felt that in terms of how I picked
-my tuning parameters it was not the most reliable methods, but rather I focused
-more on time efficiency. 
+able to dial more into what works and what doesn't. As I felt that did not use 
+the most reliable methods in terms of how I picked my tuning parameters, rather I focused
+more on time efficiency.
 
 ## References {#sec-references}
 
@@ -513,6 +553,52 @@ more on time efficiency.
 ## Appendix 
 
 ### Appendix I: EDA {#sec-EDA}
+
+Within this section I will provide the distributions of all of the other
+predictor variables. As well as any further bivariate distributions in which 
+I looked at but did not express in the [Data Overview & Quality](@sec-data) section. 
+
+#### Univariate Analysis
+
+![Cholesterol Check - Univariate Distribution](figures/univariate-EDA/categorical_univariate_1.png)
+
+![Stroke - Univariate Distribution](figures/univariate-EDA/categorical_univariate_2.png)
+
+![Heart Diseaseor Attack - Univariate Distribution](figures/univariate-EDA/categorical_univariate_3.png)
+
+![Phyisical Activity - Univariate Distribution](figures/univariate-EDA/categorical_univariate_4.png)
+
+![Fruits - Univariate Distribution](figures/univariate-EDA/categorical_univariate_5.png)
+
+![Vegetables - Univariate Distribution](figures/univariate-EDA/categorical_univariate_6.png)
+
+![Heavy Alcohol Consumption - Univariate Distribution](figures/univariate-EDA/categorical_univariate_7.png)
+
+![Any Healthcare - Univariate Distribution](figures/univariate-EDA/categorical_univariate_8.png)
+
+![No Doctor Cause of Cost - Univariate Distribution](figures/univariate-EDA/categorical_univariate_9.png)
+
+![Difficulty Walking Up Stairs - Univariate Distribution](figures/univariate-EDA/categorical_univariate_11.png)
+
+![Smoker - Univariate Distribution](figures/univariate-EDA/categorical_univariate_14.png)
+
+![Sex - Univariate Distribution](figures/univariate-EDA/categorical_univariate_15.png)
+
+![Mental Health - Univariate Distribution](figures/univariate-EDA/numerical_univariate_2.png)
+
+![Physical Health - Univariate Distribution](figures/univariate-EDA/numerical_univariate_3.png)
+
+![Age - Univariate Distribution](figures/univariate-EDA/numerical_univariate_4.png)
+
+![Education - Univariate Distribution](figures/univariate-EDA/numerical_univariate_5.png)
+
+![Income - Univariate Distribution](figures/univariate-EDA/numerical_univariate_6.png)
+
+#### Bivariate Analysis
+
+![Fruits by Vegetables - Univariate Distribution](figures/bivariate-EDA/bivariate-2.png)
+
+![General Health by Physical Activity - Univariate Distribution](figures/bivariate-EDA/bivariate-9.png)
 
 ### Appendix II: Tuning Models Selections {#sec-tuning}
 
