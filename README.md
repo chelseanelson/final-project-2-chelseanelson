@@ -12,10 +12,14 @@ valuable insights to the field.
 ## Project Structure
 
 `data/` : Contains datasets used in the project
+
 `figures/`: stores visualizations and figures generated during the project
+
 `rscripts/`: contains all of the associated rscripts for the project
+
 `memos/` : holds associated memos to see how I progressed through the project
-`results/` : contains the tuned and final data and models associated with the lab (change this later)
+
+`results/` : contains results assocaited with the tuned and final models
 
 ## Documents
 
